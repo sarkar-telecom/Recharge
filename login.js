@@ -1,4 +1,3 @@
-// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
   authDomain: "diamond-recharge-f7f59.firebaseapp.com",
@@ -12,7 +11,6 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Elements
 const loginBtn = document.getElementById('loginBtn');
 const googleBtn = document.getElementById('googleBtn');
 const registerBtn = document.getElementById('registerBtn');
@@ -23,10 +21,8 @@ const rememberMe = document.getElementById('rememberMe');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 
-// Show/hide password
 showPass.addEventListener('change',()=>{passwordInput.type = showPass.checked ? 'text':'password';});
 
-// Login Email/Password
 loginBtn.addEventListener('click',()=>{
   const email = emailInput.value;
   const password = passwordInput.value;
@@ -37,7 +33,6 @@ loginBtn.addEventListener('click',()=>{
     .catch(e=> msg.textContent = e.message);
 });
 
-// Google Login
 googleBtn.addEventListener('click',()=>{
   const provider = new firebase.auth.GoogleAuthProvider();
   auth.signInWithPopup(provider)
@@ -52,10 +47,7 @@ googleBtn.addEventListener('click',()=>{
     .catch(e=> msg.textContent = e.message);
 });
 
-// Register button
 registerBtn.addEventListener('click',()=>{window.location.href='register.html';});
-
-// Forgot password
 forgotBtn.addEventListener('click',()=>{
   const email = emailInput.value;
   if(!email){msg.textContent="Enter your email first"; return;}
