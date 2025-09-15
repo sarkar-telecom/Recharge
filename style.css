@@ -1,65 +1,30 @@
 /* General */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Orbitron',sans-serif;background:#0d0d0d;color:#fff;}
+body{margin:0;font-family:'Arial',sans-serif;background:#0f1115;color:#e7eaf0;}
+h1,h2,h3{color:#06b6d4;}
+a{color:#06b6d4;text-decoration:none;}
+a:hover{color:#0ea5e9;}
 
-/* Container */
-.container{
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(10px);
-  padding:40px;
-  border-radius:15px;
-  box-shadow:0 0 30px #0ff;
-  width:350px;
-  max-width:90%;
-  margin:50px auto;
-  text-align:center;
-}
-.container h1{margin-bottom:20px;color:#0ff;text-shadow:0 0 10px #0ff;}
-input[type="email"], input[type="password"], input[type="text"]{
-  width:100%;padding:12px;margin:10px 0;border:none;border-radius:8px;
-  background: rgba(255,255,255,0.05);color:#fff;
-}
-input::placeholder{color:#aaa;}
-button{
-  width:100%;padding:12px;margin-top:15px;border:none;border-radius:8px;
-  font-weight:bold;cursor:pointer;transition:0.3s;
-}
-button:hover{box-shadow:0 0 15px #0f0;}
-
-/* Buttons */
-.login-btn{background:#0ff;color:#000;}
-.google-btn{background:#f44336;color:#fff;margin-top:10px;}
-.google-btn:hover{background:#ff5722;box-shadow:0 0 10px #ff5722;}
-.register-btn{background:transparent;border:1px solid #0ff;color:#0ff;margin-top:15px;}
-.register-btn:hover{background:#0ff;color:#000;box-shadow:0 0 10px #0f0;}
-
-/* Extra Options */
-.extra{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:14px;}
-.extra a{color:#0ff;text-decoration:none;}
-.extra a:hover{color:#0f0;}
-.show-pass{display:flex;align-items:center;font-size:14px;}
-.show-pass input{margin-right:5px;}
-.msg{color:#f00;text-align:center;margin-top:10px;}
+/* Card */
+.container{background:#171a21;padding:24px;border-radius:16px;width:340px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.6);margin:auto;margin-top:50px;}
+input{width:92%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #333;background:#0f1115;color:#e7eaf0;}
+button{border:none;border-radius:6px;padding:10px;margin:8px;width:95%;cursor:pointer;font-weight:bold;}
+.nav-btn{background:#06b6d4;color:#001;}
+.nav-btn:hover{background:#0ea5e9;}
+.extra-btn{background:#1f2937;color:#e7eaf0;}
+.extra-btn:hover{background:#374151;}
 
 /* Header */
-header{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);box-shadow:0 0 10px #0ff;position:fixed;width:100%;top:0;z-index:100;}
-.header-title{font-size:1.5em;color:#0ff;}
+header{display:flex;justify-content:space-between;align-items:center;background:#171a21;padding:10px 20px;box-shadow:0 2px 6px rgba(0,0,0,0.6);}
+.header-title{font-size:1.5em;color:#0ff;font-weight:bold;}
+.avatar{width:40px;height:40px;border-radius:50%;cursor:pointer;}
+.dropdown{display:none;position:absolute;right:20px;top:60px;background:#171a21;border:1px solid #333;border-radius:8px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.6);}
+.dropdown a{display:block;padding:10px 20px;color:#e7eaf0;}
+.dropdown a:hover{background:#0f1115;color:#06b6d4;}
 
 /* Sidebar */
-.sidebar{position:fixed;left:-250px;top:0;width:250px;height:100%;background:rgba(0,0,0,0.9);backdrop-filter:blur(8px);padding-top:60px;transition:0.3s;box-shadow:2px 0 10px #0ff;z-index:99;}
-.sidebar a{display:block;padding:15px 20px;color:#0ff;text-decoration:none;transition:0.3s;}
-.sidebar a:hover{background:#0ff;color:#000;}
+.sidebar{position:fixed;top:0;left:-250px;width:250px;height:100%;background:#171a21;transition:0.3s;padding-top:60px;z-index:999;}
+.sidebar a{display:block;padding:12px 24px;color:#e7eaf0;}
+.sidebar a:hover{background:#0f1115;color:#06b6d4;}
 
-/* Avatar & Dropdown */
-.avatar{width:40px;height:40px;border-radius:50%;cursor:pointer;border:2px solid #0ff;}
-.dropdown{position:absolute;top:60px;right:20px;background:rgba(0,0,0,0.9);border:1px solid #0ff;border-radius:8px;display:none;min-width:150px;z-index:100;}
-.dropdown a{display:block;padding:10px;color:#0ff;text-decoration:none;transition:0.3s;}
-.dropdown a:hover{background:#0ff;color:#000;}
-
-/* Main */
-main{padding:20px;margin-top:60px;}
-h2{color:#0ff;text-shadow:0 0 10px #0ff;}
-
-/* Profile Avatar */
-#profileAvatar{width:100px;height:100px;border-radius:50%;margin-bottom:15px;}
+/* Main content */
+main{margin-left:20px;padding:20px;}
