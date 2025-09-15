@@ -5,33 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - Diamond Recharge</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-*{box-sizing:border-box;}
-body{margin:0;font-family:'Orbitron',sans-serif;background:#0d0d0d;color:#fff;}
-header{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);box-shadow:0 0 10px #0ff;}
-.header-title{font-size:1.5em;color:#0ff;}
-.sidebar{position:fixed;left:-250px;top:0;width:250px;height:100%;background:rgba(0,0,0,0.9);backdrop-filter:blur(8px);padding-top:60px;transition:0.3s;box-shadow:2px 0 10px #0ff;}
-.sidebar a{display:block;padding:15px 20px;color:#0ff;text-decoration:none;}
-.sidebar a:hover{background:#0ff;color:#000;}
-#sidebarToggle{font-size:1.5em;cursor:pointer;}
-.avatar{width:40px;height:40px;border-radius:50%;cursor:pointer;}
-.dropdown{position:absolute;top:60px;right:20px;background:rgba(0,0,0,0.9);border:1px solid #0ff;border-radius:8px;display:none;min-width:150px;}
-.dropdown a{display:block;padding:10px;color:#0ff;text-decoration:none;}
-.dropdown a:hover{background:#0ff;color:#000;}
-main{padding:20px;margin-top:60px;}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-<i id="sidebarToggle" class="fas fa-bars"></i>
-<div class="header-title">Diamond Recharge</div>
-<img src="https://via.placeholder.com/40" id="userAvatar" class="avatar">
-<div class="dropdown" id="avatarDropdown">
-  <a href="profile.html">Profile</a>
-  <a href="#" id="logoutBtn">Logout</a>
-</div>
+  <i id="sidebarToggle" class="fas fa-bars"></i>
+  <div class="header-title">Diamond Recharge</div>
+  <img src="https://via.placeholder.com/40" id="userAvatar" class="avatar">
+  <div class="dropdown" id="avatarDropdown">
+    <a href="profile.html">Profile</a>
+    <a href="#" id="logoutBtn">Logout</a>
+  </div>
 </header>
 
 <div class="sidebar" id="sidebar">
@@ -46,59 +31,10 @@ main{padding:20px;margin-top:60px;}
 <p>Your content goes here...</p>
 </main>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-
-<script>
-// Firebase Config
-const firebaseConfig = {
-  apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
-  authDomain: "diamond-recharge-f7f59.firebaseapp.com",
-  projectId: "diamond-recharge-f7f59",
-  storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
-  messagingSenderId: "657717928489",
-  appId: "1:657717928489:web:70431ebc9afb7002d4b238",
-  measurementId: "G-TDK78BQ8SQ"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// Sidebar toggle
-const sidebar = document.getElementById('sidebar');
-const sidebarToggle = document.getElementById('sidebarToggle');
-sidebarToggle.addEventListener('click',()=>{
-  sidebar.style.left = (sidebar.style.left==='0px') ? '-250px' : '0px';
-});
-
-// Avatar dropdown
-const userAvatar = document.getElementById('userAvatar');
-const avatarDropdown = document.getElementById('avatarDropdown');
-userAvatar.addEventListener('click',()=>{
-  avatarDropdown.style.display = avatarDropdown.style.display==='block' ? 'none' : 'block';
-});
-
-// Logout
-const logoutBtn = document.getElementById('logoutBtn');
-logoutBtn.addEventListener('click',()=>{
-  auth.signOut().then(()=>{window.location.href='login.html';});
-});
-
-// Load user avatar
-auth.onAuthStateChanged(user=>{
-  if(user){
-    db.collection('users').doc(user.uid).get().then(doc=>{
-      if(doc.exists && doc.data().avatarUrl){
-        userAvatar.src = doc.data().avatarUrl;
-      }
-    });
-  }else{
-    window.location.href='login.html'; // redirect if not logged in
-  }
-});
-</script>
+<script src="index.js"></script>
 
 </body>
 </html>
