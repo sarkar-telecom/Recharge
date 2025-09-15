@@ -4,27 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - SARKAR TELECOM</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Style -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="container">
+<body data-page="login">
+
+  <!-- Header / Navbar -->
+  <header class="header">
+    <div class="logo">SARKAR TELECOM</div>
+    <nav class="nav">
+      <a href="login.html" class="active"><i class="fas fa-sign-in-alt"></i> Login</a>
+      <a href="register.html"><i class="fas fa-user-plus"></i> Register</a>
+    </nav>
+  </header>
+
+  <!-- Login Container -->
+  <div class="container glass">
     <h2>🔐 Login</h2>
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
+
+    <div class="input-group">
+      <i class="fas fa-envelope"></i>
+      <input type="email" id="email" placeholder="Email">
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-lock"></i>
+      <input type="password" id="password" placeholder="Password">
+    </div>
 
     <div class="options">
       <label><input type="checkbox" id="rememberMe"> Remember me</label>
       <label><input type="checkbox" id="showPass"> Show password</label>
     </div>
 
-    <button class="nav-btn" id="loginBtn">Login</button>
-    <button class="extra-btn" id="googleBtn">Continue with Google</button>
-    <button class="extra-btn" id="registerBtn">Register</button>
-    <button class="extra-btn" id="forgotBtn">Forgot Password?</button>
+    <button class="nav-btn" id="loginBtn"><i class="fas fa-lock"></i> Login</button>
+    <button class="extra-btn" id="googleBtn"><i class="fab fa-google"></i> Continue with Google</button>
+    <button class="extra-btn" id="registerBtn"><i class="fas fa-user-plus"></i> Register</button>
+    <button class="extra-btn" id="forgotBtn"><i class="fas fa-envelope-open-text"></i> Forgot Password?</button>
 
     <p class="msg" id="msg"></p>
   </div>
 
-  <script type="module" src="login.js"></script>
+  <!-- JS -->
+  <script type="module" src="main.js"></script>
 </body>
 </html>
