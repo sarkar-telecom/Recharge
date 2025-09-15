@@ -4,37 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - Diamond Recharge</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="style.css">
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+<script src="index.js"></script>
 </head>
 <body>
-
 <header>
-  <i id="sidebarToggle" class="fas fa-bars"></i>
-  <div class="header-title">Diamond Recharge</div>
-  <img src="https://via.placeholder.com/40" id="userAvatar" class="avatar">
-  <div class="dropdown" id="avatarDropdown">
+  <i id="menuBtn" class="fas fa-bars" style="cursor:pointer;color:#0ff;font-size:1.5em;"></i>
+  <span class="header-title">Diamond Recharge</span>
+  <img id="userAvatar" class="avatar" src="https://via.placeholder.com/40">
+  <div id="avatarDropdown" class="dropdown">
     <a href="profile.html">Profile</a>
     <a href="#" id="logoutBtn">Logout</a>
   </div>
 </header>
 
-<div class="sidebar" id="sidebar">
-  <a href="#">Dashboard</a>
+<div id="sidebar" class="sidebar">
+  <a href="#">Home</a>
   <a href="#">Recharge</a>
   <a href="#">Transactions</a>
   <a href="#">Settings</a>
 </div>
 
 <main>
-<h2>Welcome to Diamond Recharge Dashboard</h2>
-<p>Your content goes here...</p>
+  <h2>Welcome to Dashboard</h2>
+  <p>Your content goes here...</p>
 </main>
-
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-<script src="index.js"></script>
-
 </body>
 </html>
