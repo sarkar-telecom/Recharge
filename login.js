@@ -26,18 +26,18 @@ const rememberEl = document.getElementById("rememberMe");
 const showPass = document.getElementById("showPass");
 const msgEl = document.getElementById("msg");
 
-// Show/Hide password
-showPass.addEventListener('change',()=>{passEl.type=showPass.checked?'text':'password';});
+// Show/hide password
+showPass.addEventListener('change',()=>{passEl.type = showPass.checked ? 'text' : 'password';});
 
 // Login
-loginBtn.addEventListener('click',async()=>{
+loginBtn.addEventListener('click', async()=>{
   const email = emailEl.value.trim();
   const pass = passEl.value.trim();
   if(!email || !pass){msgEl.textContent="⚠️ Enter email & password"; return;}
   msgEl.textContent="⏳ Logging in...";
 
   const persistence = rememberEl.checked ? browserLocalPersistence : browserSessionPersistence;
-  await setPersistence(auth,persistence);
+  await setPersistence(auth, persistence);
 
   signInWithEmailAndPassword(auth,email,pass)
     .then(()=>{window.location.href="index.html";})
