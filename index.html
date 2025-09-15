@@ -3,34 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - Diamond Recharge</title>
+<title>💎 Dashboard - Diamond Recharge</title>
 <link rel="stylesheet" href="style.css">
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-<script src="index.js"></script>
 </head>
 <body>
 <header>
-  <i id="menuBtn" class="fas fa-bars" style="cursor:pointer;color:#0ff;font-size:1.5em;"></i>
-  <span class="header-title">Diamond Recharge</span>
-  <img id="userAvatar" class="avatar" src="https://via.placeholder.com/40">
-  <div id="avatarDropdown" class="dropdown">
+  <div class="header-title">Diamond Recharge</div>
+  <img src="https://via.placeholder.com/40" class="avatar" id="userAvatar">
+  <div class="dropdown" id="dropdown">
     <a href="profile.html">Profile</a>
     <a href="#" id="logoutBtn">Logout</a>
   </div>
 </header>
-
-<div id="sidebar" class="sidebar">
-  <a href="#">Home</a>
-  <a href="#">Recharge</a>
-  <a href="#">Transactions</a>
-  <a href="#">Settings</a>
+<div class="sidebar" id="sidebar">
+  <a href="index.html">Home</a>
+  <a href="profile.html">Profile</a>
 </div>
-
 <main>
   <h2>Welcome to Dashboard</h2>
-  <p>Your content goes here...</p>
+  <p>This is your main dashboard content.</p>
 </main>
+<script type="module" src="index.js"></script>
 </body>
 </html>
