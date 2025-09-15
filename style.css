@@ -1,4 +1,3 @@
-/* Font + Global */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 
 body {
@@ -24,7 +23,6 @@ header {
   box-shadow:0 0 10px #0ff;
   z-index:1001;
 }
-
 .menu-toggle {
   cursor:pointer;
   font-size:26px;
@@ -35,14 +33,12 @@ header {
   color:#0f0;
   text-shadow:0 0 10px #0f0;
 }
-
 .site-title {
   font-size:20px;
   font-weight:700;
   color:#0ff;
   text-shadow:0 0 8px #0ff;
 }
-
 .avatar {
   width:40px;
   height:40px;
