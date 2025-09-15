@@ -7,25 +7,50 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-body {margin:0;font-family:'Orbitron',sans-serif;background:#0d0d0d;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh;}
-.container{background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);padding:40px;border-radius:12px;box-shadow:0 0 20px #0ff;text-align:center;}
-.container h1{margin-bottom:20px;color:#0ff;text-shadow:0 0 10px #0ff;}
-input{width:100%;padding:10px;margin:10px 0;border:none;border-radius:6px;}
-button{padding:10px 20px;background:#0ff;color:#000;font-weight:bold;border:none;border-radius:6px;cursor:pointer;transition:.3s;}
-button:hover{background:#0f0;color:#000;box-shadow:0 0 10px #0f0;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Orbitron',sans-serif;background:#0d0d0d;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh;}
+.container{background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);padding:40px;border-radius:15px;box-shadow:0 0 30px #0ff;width:350px;max-width:90%;}
+.container h1{text-align:center;margin-bottom:20px;color:#0ff;text-shadow:0 0 10px #0ff;}
+input[type="email"], input[type="password"]{width:100%;padding:12px;margin:10px 0;border:none;border-radius:8px;background:rgba(255,255,255,0.05);color:#fff;}
+input[type="email"]::placeholder,input[type="password"]::placeholder{color:#aaa;}
+button{width:100%;padding:12px;margin-top:15px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;transition:.3s;}
+button:hover{box-shadow:0 0 15px #0f0;}
+.login-btn{background:#0ff;color:#000;}
 .google-btn{background:#f44336;color:#fff;margin-top:10px;}
 .google-btn:hover{background:#ff5722;box-shadow:0 0 10px #ff5722;}
+.extra{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:14px;}
+.extra a{color:#0ff;text-decoration:none;}
+.extra a:hover{color:#0f0;}
+.show-pass{display:flex;align-items:center;font-size:14px;}
+.show-pass input{margin-right:5px;}
+.msg{color:#f00;text-align:center;margin-top:10px;}
+.register-btn{background:transparent;border:1px solid #0ff;color:#0ff;margin-top:15px;}
+.register-btn:hover{background:#0ff;color:#000;box-shadow:0 0 10px #0f0;}
 </style>
 </head>
 <body>
 
 <div class="container">
-<h1>Login</h1>
+<h1>Diamond Recharge</h1>
+
 <input type="email" id="email" placeholder="Email">
+<div style="position:relative;">
 <input type="password" id="password" placeholder="Password">
-<button id="loginBtn">Login</button>
+</div>
+
+<div class="extra">
+  <label class="show-pass"><input type="checkbox" id="showPass"> Show Password</label>
+  <a href="#" id="forgotBtn">Forgot Password?</a>
+</div>
+
+<label class="show-pass" style="margin-top:10px;"><input type="checkbox" id="rememberMe"> Remember Me</label>
+
+<button class="login-btn" id="loginBtn">Login</button>
 <button class="google-btn" id="googleBtn"><i class="fab fa-google"></i> Sign in with Google</button>
-<p id="msg" style="color:#f00;"></p>
+
+<button class="register-btn" id="registerBtn">Register</button>
+
+<p class="msg" id="msg"></p>
 </div>
 
 <!-- Firebase SDK -->
@@ -34,7 +59,7 @@ button:hover{background:#0f0;color:#000;box-shadow:0 0 10px #0f0;}
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
 <script>
-// ==================== Firebase Config ====================
+// ================= Firebase Config =================
 const firebaseConfig = {
   apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
   authDomain: "diamond-recharge-f7f59.firebaseapp.com",
@@ -45,22 +70,36 @@ const firebaseConfig = {
   measurementId: "G-TDK78BQ8SQ"
 };
 firebase.initializeApp(firebaseConfig);
-
 const auth = firebase.auth();
 const db = firebase.firestore();
 
 // Elements
 const loginBtn = document.getElementById('loginBtn');
 const googleBtn = document.getElementById('googleBtn');
+const registerBtn = document.getElementById('registerBtn');
+const forgotBtn = document.getElementById('forgotBtn');
 const msg = document.getElementById('msg');
+const showPass = document.getElementById('showPass');
+const rememberMe = document.getElementById('rememberMe');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
 
-// Email/Password Login
+// Show/hide password
+showPass.addEventListener('change',()=>{
+  passwordInput.type = showPass.checked ? 'text' : 'password';
+});
+
+// Login with Email/Password
 loginBtn.addEventListener('click',()=>{
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  auth.signInWithEmailAndPassword(email,password)
+  const email = emailInput.value;
+  const password = passwordInput.value;
+  const persistence = rememberMe.checked ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION;
+  auth.setPersistence(persistence)
+    .then(()=>{
+      return auth.signInWithEmailAndPassword(email,password);
+    })
     .then(()=>{window.location.href='index.html';})
-    .catch(e=>{msg.textContent=e.message;});
+    .catch(e=>{msg.textContent = e.message;});
 });
 
 // Google Login
@@ -68,7 +107,6 @@ googleBtn.addEventListener('click',()=>{
   const provider = new firebase.auth.GoogleAuthProvider();
   auth.signInWithPopup(provider)
     .then(result=>{
-      // Save user to Firestore if not exists
       const user = result.user;
       db.collection('users').doc(user.uid).set({
         email: user.email,
@@ -77,6 +115,20 @@ googleBtn.addEventListener('click',()=>{
       window.location.href='index.html';
     })
     .catch(e=>{msg.textContent=e.message;});
+});
+
+// Register button
+registerBtn.addEventListener('click',()=>{
+  window.location.href='register.html'; // Create a separate register page
+});
+
+// Forgot password
+forgotBtn.addEventListener('click',()=>{
+  const email = emailInput.value;
+  if(!email){msg.textContent="Enter your email first"; return;}
+  auth.sendPasswordResetEmail(email)
+    .then(()=>{msg.style.color="#0f0"; msg.textContent="Password reset email sent!";})
+    .catch(e=>{msg.style.color="#f00"; msg.textContent=e.message;});
 });
 </script>
 
