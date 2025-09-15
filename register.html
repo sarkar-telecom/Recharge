@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📝 Register - Diamond Recharge</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Diamond Recharge</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-  <h2>📝 Diamond Recharge Register</h2>
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
-  <input type="password" id="confirmPassword" placeholder="Confirm Password">
+  <div class="container">
+    <h2>📝 Register</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <input type="password" id="confirmPassword" placeholder="Confirm Password">
 
-  <div class="options">
-    <label><input type="checkbox" id="showPass"> Show Password</label>
+    <div class="options">
+      <label><input type="checkbox" id="showPass"> Show password</label>
+    </div>
+
+    <button class="nav-btn" id="registerBtn">Register</button>
+    <button class="extra-btn" id="googleBtn">Sign in with Google</button>
+    <button class="extra-btn" id="loginBtn">Back to Login</button>
+
+    <p class="msg" id="msg"></p>
   </div>
 
-  <button class="nav-btn" id="registerBtn">Register</button>
-  <button class="extra-btn" id="googleBtn">Sign up with Google</button>
-  <button class="extra-btn" id="loginBtn">Already have an account? Login</button>
-
-  <p class="msg" id="msg"></p>
-</div>
-
-<script type="module" src="register.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
