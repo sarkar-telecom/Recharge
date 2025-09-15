@@ -16,6 +16,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// ----- Login Page -----
 function pageLogin(){
   const emailEl = document.getElementById("email");
   const passEl = document.getElementById("password");
@@ -29,7 +30,6 @@ function pageLogin(){
 
   showPass?.addEventListener("change",e=>{passEl.type=e.target.checked?"text":"password";});
 
-  // Email/Password login
   loginBtn?.addEventListener("click",()=>{
     const email=emailEl.value.trim();
     const pass=passEl.value.trim();
@@ -48,7 +48,6 @@ function pageLogin(){
     }).catch(e=>{msgEl.textContent="❌ "+e.message;});
   });
 
-  // Google login
   googleBtn?.addEventListener("click",()=>{
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth,provider).then(res=>{
@@ -58,14 +57,12 @@ function pageLogin(){
     }).catch(e=>{msgEl.textContent="❌ "+e.message;});
   });
 
-  // Load saved credentials
   window.addEventListener("load",()=>{
     const savedEmail = localStorage.getItem("savedEmail");
     const savedPass = localStorage.getItem("savedPass");
     if(savedEmail && savedPass){emailEl.value=savedEmail; passEl.value=savedPass; rememberMeEl.checked=true;}
   });
 
-  // Forgot password
   document.getElementById("forgotBtn")?.addEventListener("click",()=>{
     const email=emailEl.value.trim();
     if(!email){msgEl.textContent="⚠️ Enter your email first"; return;}
@@ -74,6 +71,7 @@ function pageLogin(){
   });
 }
 
+// ----- Register Page -----
 function pageRegister(){
   const emailEl = document.getElementById("email");
   const passEl = document.getElementById("password");
@@ -115,6 +113,7 @@ function pageRegister(){
   loginBtn?.addEventListener("click",()=>window.location.href='login.html');
 }
 
+// ----- Dashboard Page -----
 function pageDashboard(){
   const avatarEl = document.getElementById("userAvatar");
   const dropdown = document.getElementById("dropdown");
@@ -134,10 +133,10 @@ function pageDashboard(){
   avatarEl?.addEventListener("click",()=>{dropdown.style.display=dropdown.style.display==='block'?'none':'block';});
   logoutBtn?.addEventListener("click",()=>{signOut(auth).then(()=>window.location.href='login.html');});
 
-  // Sidebar toggle (if you have a menu button with id menuBtn)
   document.getElementById("menuBtn")?.addEventListener("click",()=>{sidebar.style.left=sidebar.style.left==='0px'?' -250px':'0px';});
 }
 
+// ----- Profile Page -----
 function pageProfile(){
   const avatarEl=document.getElementById("profileAvatar");
   const emailEl=document.getElementById("userEmail");
@@ -157,7 +156,7 @@ function pageProfile(){
   logoutBtn?.addEventListener("click",()=>{signOut(auth).then(()=>window.location.href='login.html');});
 }
 
-// Run page-specific logic
+// Run page-specific
 pageLogin();
 pageRegister();
 pageDashboard();
