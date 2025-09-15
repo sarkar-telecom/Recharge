@@ -7,8 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-body { margin:0; font-family:'Orbitron',sans-serif; background:#0d0d0d; color:#fff; overflow-x:hidden; }
-/* Header */
+body {margin:0;font-family:'Orbitron',sans-serif;background:#0d0d0d;color:#fff;overflow-x:hidden;}
 header{position:fixed;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:rgba(0,0,0,0.3);backdrop-filter:blur(10px);border-bottom:1px solid #0ff;box-shadow:0 0 10px #0ff;z-index:1001;}
 .menu-toggle{cursor:pointer;font-size:26px;color:#0ff;transition:.3s;}
 .menu-toggle:hover{color:#0f0;text-shadow:0 0 10px #0f0;}
@@ -79,7 +78,7 @@ const avatarBtn=document.getElementById("avatarBtn");
 const profileLink=document.getElementById("profileLink");
 const authLink=document.getElementById("authLink");
 
-// Sidebar open/close
+// Sidebar toggle
 menuToggle.addEventListener("click",()=>{sidebar.classList.add("open");overlay.style.display="block";});
 overlay.addEventListener("click",()=>{sidebar.classList.remove("open");overlay.style.display="none";});
 
@@ -101,7 +100,6 @@ auth.onAuthStateChanged(user=>{
     profileLink.href="profile.html";
     authLink.textContent="Logout";
     authLink.onclick=function(){auth.signOut();};
-    // Load avatar from Firestore
     db.collection("users").doc(user.uid).get().then(doc=>{
       if(doc.exists && doc.data().avatarUrl) avatarBtn.src=doc.data().avatarUrl;
     });
