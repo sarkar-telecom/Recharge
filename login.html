@@ -3,29 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Diamond Recharge</title>
+<title>🔐 Login - Diamond Recharge</title>
 <link rel="stylesheet" href="style.css">
-<!-- Firebase v8 CDN -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
 <div class="container">
-  <h1>Diamond Recharge</h1>
+  <h2>🔐 Login</h2>
   <input type="email" id="email" placeholder="Email">
   <input type="password" id="password" placeholder="Password">
-  <div class="extra">
-    <label class="show-pass"><input type="checkbox" id="showPass"> Show Password</label>
-    <a href="#" id="forgotBtn">Forgot Password?</a>
-  </div>
-  <label class="show-pass"><input type="checkbox" id="rememberMe"> Remember Me</label>
-  <button class="login-btn" id="loginBtn">Login</button>
-  <button class="google-btn" id="googleBtn"><i class="fab fa-google"></i> Sign in with Google</button>
-  <button class="register-btn" id="registerBtn">Register</button>
+  <label><input type="checkbox" id="rememberMe"> Remember Me</label>
+  <label><input type="checkbox" id="showPass"> Show Password</label>
+  <button class="nav-btn" id="loginBtn">Login</button>
+  <button class="extra-btn" id="googleBtn">Sign in with Google</button>
+  <button class="extra-btn" id="registerBtn">Register</button>
+  <button class="extra-btn" id="forgotBtn">Forgot Password?</button>
   <p class="msg" id="msg"></p>
 </div>
-
-<script src="login.js"></script>
+<script type="module" src="login.js"></script>
 </body>
 </html>
