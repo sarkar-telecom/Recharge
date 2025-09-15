@@ -8,60 +8,40 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
     }
+
     /* Header */
-    .header {
+    header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      background: #111;
-      color: #fff;
+      justify-content: space-between;
       padding: 10px 20px;
+      background: #222;
+      color: #fff;
       position: fixed;
+      width: 100%;
       top: 0;
-      left: 0;
-      right: 0;
       z-index: 1000;
-      border-bottom: 1px solid #333;
     }
+
     .menu-toggle {
-      font-size: 22px;
       cursor: pointer;
+      font-size: 24px;
     }
+
     .site-title {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: bold;
     }
-    .user-avatar {
-      width: 40px;
-      height: 40px;
+
+    .avatar {
+      width: 35px;
+      height: 35px;
       border-radius: 50%;
       cursor: pointer;
       object-fit: cover;
     }
-    /* Dropdown */
-    .dropdown {
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      background: #222;
-      border-radius: 8px;
-      display: none;
-      flex-direction: column;
-      min-width: 150px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-    }
-    .dropdown a {
-      padding: 10px;
-      color: #fff;
-      text-decoration: none;
-      display: block;
-    }
-    .dropdown a:hover {
-      background: #444;
-    }
+
     /* Sidebar */
     .sidebar {
       position: fixed;
@@ -69,43 +49,82 @@
       left: -250px;
       width: 250px;
       height: 100%;
-      background: #222;
-      padding-top: 60px; /* header space */
+      background: #333;
+      color: #fff;
+      padding-top: 60px;
       transition: left 0.3s ease;
       z-index: 999;
     }
-    .sidebar.active {
+
+    .sidebar.open {
       left: 0;
     }
+
     .sidebar a {
       display: block;
       padding: 15px 20px;
       color: #fff;
       text-decoration: none;
     }
+
     .sidebar a:hover {
       background: #444;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: #fff;
+      color: #000;
+      min-width: 150px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 2000;
+    }
+
+    .dropdown-content a {
+      padding: 10px;
+      display: block;
+      text-decoration: none;
+      color: #000;
+    }
+
+    .dropdown-content a:hover {
+      background: #eee;
+    }
+
+    .dropdown.show .dropdown-content {
+      display: block;
     }
   </style>
 </head>
 <body>
+
   <!-- Header -->
-  <div class="header">
-    <span class="menu-toggle">☰</span>
-    <div class="site-title">Diamond Recharge</div>
-    <img id="avatar" class="user-avatar" src="https://via.placeholder.com/40" alt="User Avatar"/>
-    <div id="dropdown" class="dropdown">
-      <a href="/profile.html">Profile</a>
-      <a href="#" id="logoutBtn">Logout</a>
+  <header>
+    <div class="menu-toggle" id="menuToggle">☰</div>
+    <div class="site-title">SARKAR TELECOM</div>
+    <div class="dropdown">
+      <img src="https://via.placeholder.com/35" alt="Avatar" class="avatar" id="avatarBtn">
+      <div class="dropdown-content" id="dropdownMenu">
+        <a href="profile.html">Profile</a>
+        <a href="#" id="logoutBtn">Logout</a>
+      </div>
     </div>
-  </div>
+  </header>
 
   <!-- Sidebar -->
-  <div id="sidebar" class="sidebar">
-    <a href="#">Home</a>
-    <a href="#">Recharge</a>
-    <a href="#">Orders</a>
-    <a href="#">Support</a>
+  <div class="sidebar" id="sidebar">
+    <a href="index.html">Home</a>
+    <a href="recharge.html">Recharge</a>
+    <a href="orders.html">Orders</a>
+    <a href="support.html">Support</a>
   </div>
 
   <!-- Firebase SDK -->
@@ -114,7 +133,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
   <script>
-    // ✅ আপনার Firebase config
+    // ✅ Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
       authDomain: "diamond-recharge-f7f59.firebaseapp.com",
@@ -125,23 +144,23 @@
       measurementId: "G-TDK78BQ8SQ"
     };
 
-    // Firebase init (v9 compat)
+    // Firebase init
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
     // Sidebar toggle
-    const toggleBtn = document.querySelector(".menu-toggle");
+    const menuToggle = document.getElementById("menuToggle");
     const sidebar = document.getElementById("sidebar");
-    toggleBtn.addEventListener("click", () => {
-      sidebar.classList.toggle("active");
+    menuToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("open");
     });
 
-    // Avatar dropdown
-    const avatar = document.getElementById("avatar");
-    const dropdown = document.getElementById("dropdown");
-    avatar.addEventListener("click", () => {
-      dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+    // Dropdown toggle
+    const avatarBtn = document.getElementById("avatarBtn");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    avatarBtn.addEventListener("click", () => {
+      avatarBtn.parentElement.classList.toggle("show");
     });
 
     // Load user avatar from Firestore
@@ -150,18 +169,22 @@
         const uid = user.uid;
         db.collection("users").doc(uid).get().then(doc => {
           if(doc.exists && doc.data().avatarUrl) {
-            avatar.src = doc.data().avatarUrl;
+            avatarBtn.src = doc.data().avatarUrl;
           }
         });
+      } else {
+        // ইউজার লগইন না থাকলে প্লেসহোল্ডার দেখাবে
+        avatarBtn.src = "https://via.placeholder.com/35";
       }
     });
 
     // Logout
-    document.getElementById("logoutBtn").addEventListener("click", () => {
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", () => {
       auth.signOut().then(() => {
-        window.location.href = "/login.html";
+        window.location.href = "login.html";
       });
     });
-  </script> 
+  </script>
 </body>
 </html>
