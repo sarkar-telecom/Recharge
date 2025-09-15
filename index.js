@@ -1,35 +1,32 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Diamond Recharge</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <span id="menuBtn" style="cursor:pointer;font-size:24px;">☰</span>
+    <span class="header-title">Diamond Recharge</span>
+    <img src="https://via.placeholder.com/40" alt="avatar" id="userAvatar" class="avatar">
+    <div class="dropdown" id="dropdown">
+      <a href="profile.html">Profile</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    </div>
+  </header>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
-  authDomain: "diamond-recharge-f7f59.firebaseapp.com",
-  projectId: "diamond-recharge-f7f59",
-  storageBucket: "diamond-recharge-f7f59.appspot.com",
-  messagingSenderId: "657717928489",
-  appId: "1:657717928489:web:70431ebc9afb7002d4b238"
-};
+  <div class="sidebar" id="sidebar">
+    <a href="index.html">Home</a>
+    <a href="profile.html">Profile</a>
+  </div>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+  <main>
+    <h2>Welcome to Dashboard</h2>
+    <p>This is your main content area.</p>
+  </main>
 
-const avatarEl = document.getElementById("userAvatar");
-const dropdown = document.getElementById("dropdown");
-const logoutBtn = document.getElementById("logoutBtn");
-
-// Toggle dropdown
-avatarEl.addEventListener('click',()=>{dropdown.style.display = dropdown.style.display==='block'?'none':'block';});
-
-// Logout
-logoutBtn.addEventListener('click',()=>{signOut(auth).then(()=>{window.location.href='login.html';});});
-
-// Check user login
-onAuthStateChanged(auth,user=>{
-  if(user){
-    getDoc(doc(db,'users',user.uid)).then(docSnap=>{
-      if(docSnap.exists()){avatarEl.src=docSnap.data().avatarUrl||'https://via.placeholder.com/40';}
-    });
-  } else {window.location.href='login.html';}
-});
+  <script type="module" src="main.js"></script>
+</body>
+</html>
