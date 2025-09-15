@@ -1,37 +1,71 @@
-/* Import Font Awesome (you already have it in HTML) */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
-
+/* Font + Global */
 body {
   margin: 0;
-  padding: 0;
   font-family: 'Poppins', sans-serif;
-  background: #0e0e0e;
+  background: #0d0d0d;
   color: #fff;
 }
 
-.container {
-  width: 320px;
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: rgba(20,20,20,0.9);
+  box-shadow: 0 0 20px #00f0ff;
+}
+.header .logo {
+  font-size: 22px;
+  font-weight: bold;
+  color: #0ff;
+  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+}
+.header .nav a {
+  margin-left: 20px;
+  color: #0ff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.header .nav a.active, .header .nav a:hover {
+  color: #ff00f0;
+  text-shadow: 0 0 10px #ff00f0;
+}
+
+/* Glass Container */
+.container.glass {
+  width: 350px;
   margin: 80px auto;
   padding: 40px;
-  background: rgba(20, 20, 20, 0.85);
   border-radius: 20px;
-  box-shadow: 0 0 30px #00f0ff, 0 0 60px #ff00f0, 0 0 90px #00ff90;
+  background: rgba(20,20,20,0.85);
+  box-shadow: 0 0 20px #00f0ff, 0 0 40px #ff00f0;
   backdrop-filter: blur(10px);
   text-align: center;
 }
 
-h2 {
-  font-size: 28px;
-  margin-bottom: 30px;
+.container h2 {
+  margin-bottom: 25px;
   color: #0ff;
-  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+  text-shadow: 0 0 10px #0ff;
 }
 
-input[type="email"],
-input[type="password"] {
+/* Input Group */
+.input-group {
+  position: relative;
+  margin: 15px 0;
+}
+.input-group i {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #0ff;
+}
+.input-group input {
   width: 100%;
-  padding: 12px 15px;
-  margin: 10px 0;
+  padding: 12px 12px 12px 40px;
   border: none;
   border-radius: 10px;
   background: rgba(255,255,255,0.05);
@@ -40,11 +74,21 @@ input[type="password"] {
   outline: none;
   box-shadow: inset 0 0 5px #0ff;
 }
-
-input::placeholder {
+.input-group input::placeholder {
   color: rgba(255,255,255,0.5);
 }
 
+/* Options */
+.options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+.options label {
+  cursor: pointer;
+}
+
+/* Buttons */
 button {
   width: 100%;
   padding: 12px;
@@ -52,44 +96,30 @@ button {
   border: none;
   border-radius: 10px;
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-weight: bold;
 }
-
 .nav-btn {
   background: linear-gradient(45deg, #00f0ff, #ff00f0);
   color: #fff;
   box-shadow: 0 0 10px #00f0ff, 0 0 20px #ff00f0;
 }
-
 .nav-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 20px #00f0ff, 0 0 40px #ff00f0;
 }
-
 .extra-btn {
   background: rgba(255,255,255,0.05);
   color: #0ff;
   box-shadow: 0 0 10px #0ff;
 }
-
 .extra-btn:hover {
   background: rgba(0,255,255,0.1);
   transform: scale(1.03);
 }
 
-.options {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  margin: 10px 0;
-}
-
-.options label {
-  cursor: pointer;
-}
-
+/* Message */
 .msg {
   margin-top: 10px;
   font-size: 14px;
@@ -97,17 +127,15 @@ button {
   text-shadow: 0 0 5px #ff4c4c;
 }
 
-/* Neon icon styles */
-input + i, button i {
-  margin-right: 8px;
-  color: #0ff;
-  text-shadow: 0 0 5px #0ff;
-}
-
-/* Mobile responsive */
+/* Mobile */
 @media(max-width: 400px){
-  .container{
+  .container.glass {
     width: 90%;
     padding: 30px 20px;
   }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header .nav a { margin-left: 0; margin-top: 8px; }
 }
