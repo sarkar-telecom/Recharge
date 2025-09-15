@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diamond Recharge</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+  body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    background: #0d0d0d;
+    color: #fff;
+  }
+
+  /* Header */
+  header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #0ff;
+    box-shadow: 0 0 10px #0ff;
+    z-index: 1000;
+  }
+
+  .menu-toggle {
+    cursor: pointer;
+    font-size: 26px;
+    color: #0ff;
+    transition: 0.3s;
+  }
+
+  .menu-toggle:hover {
+    color: #0f0;
+    text-shadow: 0 0 10px #0f0;
+  }
+
+  .site-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0ff;
+    text-shadow: 0 0 8px #0ff;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+    border: 2px solid #0ff;
+    box-shadow: 0 0 10px #0ff;
+    transition: 0.3s;
+  }
+
+  .avatar:hover {
+    box-shadow: 0 0 15px #0f0;
+    border-color: #0f0;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    padding-top: 60px;
+    transition: left 0.3s ease;
+    z-index: 999;
+    border-right: 1px solid #0ff;
+    box-shadow: 0 0 15px #0ff inset;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    color: #0ff;
+    text-decoration: none;
+    font-weight: 500;
+    text-shadow: 0 0 5px #0ff;
+    transition: 0.3s;
+  }
+
+  .sidebar a i {
+    margin-right: 15px;
+    width: 20px;
+    text-align: center;
+  }
+
+  .sidebar a:hover {
+    color: #0f0;
+    text-shadow: 0 0 10px #0f0;
+  }
+
+  /* Dropdown */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    min-width: 150px;
+    box-shadow: 0 0 15px #0ff;
+    border-radius: 8px;
+  }
+
+  .dropdown-content a {
+    padding: 10px;
+    display: block;
+    text-decoration: none;
+    color: #0ff;
+    font-weight: 500;
+    text-shadow: 0 0 5px #0ff;
+  }
+
+  .dropdown-content a:hover {
+    color: #0f0;
+    text-shadow: 0 0 10px #0f0;
+    background: rgba(0,255,0,0.1);
+  }
+
+  .dropdown.show .dropdown-content {
+    display: block;
+  }
+
+  /* Responsive */
+  @media(max-width:600px){
+    .site-title {
+      font-size: 16px;
+    }
+    .sidebar {
+      width: 200px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="menu-toggle" id="menuToggle">☰</div>
+    <div class="site-title">Diamond Recharge</div>
+    <div class="dropdown">
+      <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar" id="avatarBtn">
+      <div class="dropdown-content" id="dropdownMenu">
+        <a href="profile.html">Profile</a>
+        <a href="#" id="logoutBtn">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="index.html"><i class="fas fa-home"></i>Home</a>
+    <a href="recharge.html"><i class="fas fa-gem"></i>Recharge</a>
+    <a href="orders.html"><i class="fas fa-list"></i>Orders</a>
+    <a href="support.html"><i class="fas fa-headset"></i>Support</a>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
+      authDomain: "diamond-recharge-f7f59.firebaseapp.com",
+      projectId: "diamond-recharge-f7f59",
+      storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
+      messagingSenderId: "657717928489",
+      appId: "1:657717928489:web:70431ebc9afb7002d4b238",
+      measurementId: "G-TDK78BQ8SQ"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Sidebar toggle
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.getElementById("sidebar");
+    menuToggle.addEventListener("click", ()=> sidebar.classList.toggle("open"));
+
+    // Dropdown toggle
+    const avatarBtn = document.getElementById("avatarBtn");
+    avatarBtn.addEventListener("click", ()=> avatarBtn.parentElement.classList.toggle("show"));
+
+    // Load avatar from Firestore
+    auth.onAuthStateChanged(user=>{
+      if(user){
+        db.collection("users").doc(user.uid).get().then(doc=>{
+          if(doc.exists && doc.data().avatarUrl){
+            avatarBtn.src = doc.data().avatarUrl;
+          }
+        });
+      } else {
+        avatarBtn.src = "https://via.placeholder.com/40";
+      }
+    });
+
+    // Logout
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", ()=>{
+      auth.signOut().then(()=> window.location.href="login.html");
+    });
+  </script>
+
+</body>
+</html>
