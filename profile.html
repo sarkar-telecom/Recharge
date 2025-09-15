@@ -5,22 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Profile - Diamond Recharge</title>
 <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<div class="container">
-  <h1>Your Profile</h1>
-  <img src="https://via.placeholder.com/100" id="profileAvatar" style="border-radius:50%;margin-bottom:15px;">
-  <p id="profileName"></p>
-  <p id="profileEmail"></p>
-  <button id="logoutBtn">Logout</button>
-</div>
-
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
@@ -35,25 +22,25 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-const profileAvatar = document.getElementById('profileAvatar');
-const profileName = document.getElementById('profileName');
-const profileEmail = document.getElementById('profileEmail');
-const logoutBtn = document.getElementById('logoutBtn');
-
 auth.onAuthStateChanged(user=>{
-  if(user){
-    db.collection('users').doc(user.uid).get().then(doc=>{
-      if(doc.exists){
-        profileAvatar.src = doc.data().avatarUrl || 'https://via.placeholder.com/100';
-        profileName.textContent = doc.data().name || 'No Name';
-        profileEmail.textContent = doc.data().email;
-      }
-    });
-  }else{window.location.href='login.html';}
+  if(!user){window.location.href='login.html'; return;}
+  document.getElementById('profileEmail').textContent = user.email;
+  db.collection('users').doc(user.uid).get().then(doc=>{
+    if(doc.exists && doc.data().avatarUrl){
+      document.getElementById('profileAvatar').src = doc.data().avatarUrl;
+    }
+  });
 });
 
-logoutBtn.addEventListener('click',()=>{auth.signOut().then(()=>window.location.href='login.html');});
+function logout(){auth.signOut().then(()=>{window.location.href='login.html';});}
 </script>
-
+</head>
+<body>
+<div class="container">
+  <h1>Profile</h1>
+  <img id="profileAvatar" src="https://via.placeholder.com/100">
+  <p id="profileEmail"></p>
+  <button onclick="logout()" class="login-btn">Logout</button>
+</div>
 </body>
 </html>
