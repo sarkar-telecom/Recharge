@@ -1,74 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Profile - Sarkar Telecom</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<!-- Header -->
-<header>
-  <div class="menu-toggle" id="menuToggle">☰</div>
-  <div class="site-title">SARKAR TELECOM</div>
-  <div class="dropdown">
-    <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar" id="avatarBtn">
-    <div class="dropdown-content" id="dropdownMenu">
-      <a href="profile.html" id="profileLink">Profile</a>
-      <a href="#" id="authLink">Logout</a>
-    </div>
-  </div>
-</header>
-
-<!-- Overlay -->
-<div class="overlay" id="overlay"></div>
-
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-  <a href="dashboard.html"><i class="fas fa-home"></i>Dashboard</a>
-  <a href="order.html"><i class="fas fa-gem"></i>Recharge</a>
-  <a href="order-history.html"><i class="fas fa-list"></i>Orders</a>
-  <a href="support.html"><i class="fas fa-headset"></i>Support</a>
-</div>
-
-<!-- Profile Section -->
-<div class="container">
-  <h2>👤 My Profile</h2>
-
-  <div class="profile-card">
-    <img src="https://via.placeholder.com/100" alt="Profile Avatar" id="profileAvatar" 
-         style="width:100px;height:100px;border-radius:50%;border:3px solid #0ff;
-         box-shadow:0 0 15px #0ff;margin-bottom:20px;object-fit:cover;"/>
-
-    <form id="profileForm">
-      <div class="input-group">
-        <i class="fas fa-user"></i>
-        <input type="text" id="userName" placeholder="Full Name" required />
-      </div>
-
-      <div class="input-group">
-        <i class="fas fa-envelope"></i>
-        <input type="email" id="userEmail" placeholder="Email" disabled />
-      </div>
-
-      <div class="input-group">
-        <i class="fas fa-phone"></i>
-        <input type="text" id="userPhone" placeholder="Phone Number" />
-      </div>
-
-      <div class="input-group">
-        <i class="fas fa-wallet"></i>
-        <input type="number" id="userBalance" placeholder="Balance" disabled />
-      </div>
-
-      <button type="submit" class="nav-btn">💾 Save Changes</button>
-    </form>
-  </div>
-</div>
-
-<script type="module" src="main.js"></script>
 <script type="module">
 import { auth, db } from "./firebase.js";
 import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
@@ -81,25 +10,29 @@ const userPhone = document.getElementById("userPhone");
 const userBalance = document.getElementById("userBalance");
 const profileForm = document.getElementById("profileForm");
 
-// Load user info
 onAuthStateChanged(auth, async (user) => {
   if (user) {
+    // 🔹 প্রথমে Auth থেকে লোড
+    profileAvatar.src = user.photoURL || "https://via.placeholder.com/100";
+    userName.value = user.displayName || "";
+    userEmail.value = user.email || "";
+
+    // 🔹 তারপর Firestore থেকে লোড (override করবে)
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
     if (snap.exists()) {
       const data = snap.data();
-      profileAvatar.src = data.avatar || "https://via.placeholder.com/100";
-      userName.value = data.name || "";
-      userEmail.value = data.email || user.email;
-      userPhone.value = data.phone || "";
-      userBalance.value = data.balance ?? 0;
+      if (data.avatar) profileAvatar.src = data.avatar;
+      if (data.name) userName.value = data.name;
+      if (data.phone) userPhone.value = data.phone;
+      if (typeof data.balance !== "undefined") userBalance.value = data.balance;
     }
   } else {
     window.location.href = "login.html";
   }
 });
 
-// Save updates
+// 🔹 Save updates
 profileForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const user = auth.currentUser;
@@ -115,6 +48,3 @@ profileForm.addEventListener("submit", async (e) => {
   alert("✅ Profile updated successfully!");
 });
 </script>
-
-</body>
-</html>
