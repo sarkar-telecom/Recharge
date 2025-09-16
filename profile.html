@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sarkar Telecom Profile</title>
+  <title>Sarkar Telecom - Profile</title>
   <style>
     body {
       margin: 0;
@@ -103,34 +103,54 @@
       padding: 20px;
       text-align: center;
     }
-    .profile-card {
+    .user-card {
       background: #1c2431;
       padding: 20px;
       border-radius: 12px;
-      max-width: 500px;
+      max-width: 420px;
       margin: auto;
       box-shadow: 0 4px 6px rgba(0,0,0,0.3);
       text-align: left;
     }
-    .profile-card img {
-      width: 90px;
-      height: 90px;
+    .user-card img {
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
+      margin: 10px auto;
       display: block;
-      margin: 0 auto 15px;
     }
-    .profile-card h2 {
-      text-align: center;
+    .form-group {
       margin-bottom: 15px;
     }
-    .profile-card .field {
-      margin: 8px 0;
-      font-size: 15px;
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: #ccc;
     }
-    .profile-card .field strong {
-      color: #bbb;
-      display: inline-block;
-      width: 130px;
+    input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    input[readonly] {
+      background: #2a3445;
+      color: #aaa;
+    }
+    .save-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #0d6efd;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .save-btn:hover {
+      background: #0b5ed7;
     }
   </style>
 </head>
@@ -159,31 +179,47 @@
 
   <!-- Main -->
   <main>
-    <div class="profile-card">
-      <img id="userPhoto" src="https://via.placeholder.com/90" alt="User Photo">
-      <h2 id="userName">Loading...</h2>
-      <div class="field"><strong>Email:</strong> <span id="userEmail"></span></div>
-      <div class="field"><strong>Role:</strong> <span id="userRole"></span></div>
-      <div class="field"><strong>Balance:</strong> <span id="userBalance"></span></div>
-      <div class="field"><strong>Approved:</strong> <span id="userApproved"></span></div>
-      <div class="field"><strong>Tier:</strong> <span id="userTier"></span></div>
-      <div class="field"><strong>Weekly Diamonds:</strong> <span id="userDiamonds"></span></div>
-      <div class="field"><strong>Weekly Total:</strong> <span id="userTotal"></span></div>
-      <div class="field"><strong>Phone:</strong> <span id="userPhone"></span></div>
+    <div class="user-card">
+      <img id="userAvatar" src="https://via.placeholder.com/100" alt="User Avatar">
+      <input type="file" id="avatarInput" accept="image/*">
+
+      <div class="form-group">
+        <label>Name (Read only)</label>
+        <input type="text" id="name" readonly>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" id="phone">
+      </div>
+      <div class="form-group">
+        <label>Role (Read only)</label>
+        <input type="text" id="role" readonly>
+      </div>
+      <div class="form-group">
+        <label>Balance (Read only)</label>
+        <input type="text" id="balance" readonly>
+      </div>
+
+      <button class="save-btn" id="saveBtn">Save Changes</button>
     </div>
   </main>
 
   <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, updateEmail, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
       authDomain: "diamond-recharge-f7f59.firebaseapp.com",
       projectId: "diamond-recharge-f7f59",
-      storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
+      storageBucket: "diamond-recharge-f7f59.appspot.com",
       messagingSenderId: "657717928489",
       appId: "1:657717928489:web:70431ebc9afb7002d4b238",
       measurementId: "G-TDK78BQ8SQ"
@@ -192,6 +228,7 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const storage = getStorage(app);
 
     // Sidebar toggle
     document.querySelector(".menu-toggle").addEventListener("click", () => {
@@ -208,30 +245,50 @@
     // Load user info
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        document.getElementById("userName").textContent = user.displayName || "No Name";
-        document.getElementById("userEmail").textContent = user.email;
-        document.getElementById("userPhoto").src = user.photoURL || "https://via.placeholder.com/90";
-        document.getElementById("profilePic").src = user.photoURL || "https://via.placeholder.com/40";
-
-        // Firestore extra user info
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
+
         if (docSnap.exists()) {
           const data = docSnap.data();
-          if (data.name) document.getElementById("userName").textContent = data.name;
-          if (data.avatar) {
-            document.getElementById("userPhoto").src = data.avatar;
-            document.getElementById("profilePic").src = data.avatar;
-          }
-          if (data.email) document.getElementById("userEmail").textContent = data.email;
-          if (data.role) document.getElementById("userRole").textContent = data.role;
-          if (data.balance) document.getElementById("userBalance").textContent = data.balance;
-          if (data.approved !== undefined) document.getElementById("userApproved").textContent = data.approved;
-          if (data.tier) document.getElementById("userTier").textContent = data.tier;
-          if (data.weeklyDiamonds) document.getElementById("userDiamonds").textContent = data.weeklyDiamonds;
-          if (data.weeklyTotal) document.getElementById("userTotal").textContent = data.weeklyTotal;
-          if (data.phone) document.getElementById("userPhone").textContent = data.phone;
+          document.getElementById("name").value = data.name || user.displayName || "";
+          document.getElementById("email").value = data.email || user.email || "";
+          document.getElementById("phone").value = data.phone || "";
+          document.getElementById("role").value = data.role || "User";
+          document.getElementById("balance").value = data.balance || "0";
+          document.getElementById("userAvatar").src = data.avatar || user.photoURL || "https://via.placeholder.com/100";
+          document.getElementById("profilePic").src = data.avatar || user.photoURL || "https://via.placeholder.com/40";
         }
+
+        // Avatar Upload
+        document.getElementById("avatarInput").addEventListener("change", async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const storageRef = ref(storage, "avatars/" + user.uid);
+          await uploadBytes(storageRef, file);
+          const url = await getDownloadURL(storageRef);
+          document.getElementById("userAvatar").src = url;
+          document.getElementById("profilePic").src = url;
+          await updateDoc(docRef, { avatar: url });
+        });
+
+        // Save Email + Phone
+        document.getElementById("saveBtn").addEventListener("click", async () => {
+          const newEmail = document.getElementById("email").value;
+          const newPhone = document.getElementById("phone").value;
+          try {
+            if (newEmail !== user.email) {
+              await updateEmail(user, newEmail);
+            }
+            await updateDoc(docRef, {
+              email: newEmail,
+              phone: newPhone
+            });
+            alert("✅ Profile updated successfully!");
+          } catch (err) {
+            alert("❌ Error: " + err.message);
+          }
+        });
+
       } else {
         window.location.href = "login.html";
       }
