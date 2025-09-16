@@ -23,6 +23,7 @@
       width: 100%;
       top: 0;
       z-index: 1000;
+      box-sizing: border-box;
     }
     .menu-toggle {
       font-size: 24px;
@@ -40,11 +41,13 @@
     .profile {
       position: relative;
       cursor: pointer;
+      padding-left: 8px; /* ✅ avatar এর জন্য সামান্য padding */
     }
     .profile img {
       width: 40px;
       height: 40px;
       border-radius: 50%;
+      display: block;
     }
     .dropdown {
       position: absolute;
@@ -52,7 +55,7 @@
       top: 50px;
       background: #fff;
       color: #333;
-      min-width: 150px;
+      min-width: 160px;
       border-radius: 6px;
       display: none;
       flex-direction: column;
@@ -133,19 +136,19 @@
     <div class="profile" id="profileMenu">
       <img id="profilePic" src="https://via.placeholder.com/40" alt="Profile">
       <div class="dropdown" id="dropdownMenu">
-        <a href="#">Profile</a>
-        <a href="#" id="logoutBtn">Logout</a>
+        <a href="profile.html">Profile</a>
+        <a href="logout.html" id="logoutBtn">Logout</a>
       </div>
     </div>
   </header>
 
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
-    <a href="#">Dashboard</a>
-    <a href="#">Profile</a>
-    <a href="#">User Request</a>
-    <a href="#">History</a>
-    <a href="#" id="logoutBtn2">Logout</a>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="profile.html">👤 Profile</a>
+    <a href="user-managment.html">📋 User Request</a>
+    <a href="order-history.html">📜 History</a>
+    <a href="logout.html" id="logoutBtn2">🚪 Logout</a>
   </div>
 
   <!-- Main -->
@@ -159,12 +162,10 @@
 
   <!-- Firebase -->
   <script type="module">
-    // Import Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-    // ✅ Your Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
       authDomain: "diamond-recharge-f7f59.firebaseapp.com",
@@ -175,7 +176,6 @@
       measurementId: "G-TDK78BQ8SQ"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
@@ -200,19 +200,19 @@
         document.getElementById("userPhoto").src = user.photoURL || "https://via.placeholder.com/80";
         document.getElementById("profilePic").src = user.photoURL || "https://via.placeholder.com/40";
 
-        // Firestore extra user info (if available)
+        // Firestore extra user info
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
           if (data.name) document.getElementById("userName").textContent = data.name;
-          if (data.photoURL) {
-            document.getElementById("userPhoto").src = data.photoURL;
-            document.getElementById("profilePic").src = data.photoURL;
+          if (data.avatar) {
+            document.getElementById("userPhoto").src = data.avatar;
+            document.getElementById("profilePic").src = data.avatar;
           }
         }
       } else {
-        window.location.href = "login.html"; // Redirect if not logged in
+        window.location.href = "login.html";
       }
     });
 
