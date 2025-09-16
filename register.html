@@ -1,67 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register - Diamond Recharge</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sarkar Telecom Register</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f1824;
+      color: #fff;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1b2735;
+      padding: 10px 15px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-sizing: border-box;
+    }
+    .menu-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #fff;
+    }
+    .site-title {
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      flex: 1;
+    }
+    .profile {
+      position: relative;
+      padding-left: 8px;
+    }
+    .profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #1c2431;
+      padding-top: 60px;
+      transition: left 0.3s ease;
+      z-index: 999;
+    }
+    .sidebar.active {
+      left: 0;
+    }
+    .sidebar a {
+      display: block;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: #fff;
+      border-bottom: 1px solid #2a3445;
+    }
+    .sidebar a:hover {
+      background: #2f3c52;
+    }
+
+    /* Main */
+    main {
+      margin-top: 80px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* Register Card */
+    .register-card {
+      background: #1c2431;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      text-align: left;
+    }
+    .register-card h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .register-card label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    .register-card input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 10px;
+    }
+    .register-card button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .register-btn {
+      background: #28a745;
+      color: #fff;
+    }
+    .google-btn {
+      background: #db4437;
+      color: #fff;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      top: 38px;
+      cursor: pointer;
+      color: #333;
+      font-size: 14px;
+      background: #eee;
+      padding: 3px 6px;
+      border-radius: 4px;
+    }
+    .login-link {
+      text-align: center;
+      margin-top: 15px;
+    }
+    .login-link a {
+      color: #00bfff;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-
-<header>
-  <div class="menu-toggle" id="menuToggle">☰</div>
-  <div class="site-title">Diamond Recharge</div>
-  <div class="dropdown">
-    <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar" id="avatarBtn">
-    <div class="dropdown-content" id="dropdownMenu">
-      <a href="#" id="profileLink">Profile</a>
-      <a href="#" id="authLink">Login</a>
+  <!-- Header -->
+  <header>
+    <button class="menu-toggle">☰</button>
+    <div class="site-title">SARKAR TELECOM</div>
+    <div class="profile">
+      <img src="https://via.placeholder.com/40" alt="Profile">
     </div>
-  </div>
-</header>
+  </header>
 
-<div class="overlay" id="overlay"></div>
-
-<div class="sidebar" id="sidebar">
-  <a href="#"><i class="fas fa-home"></i>Home</a>
-  <a href="#"><i class="fas fa-gem"></i>Recharge</a>
-  <a href="#"><i class="fas fa-list"></i>Orders</a>
-  <a href="#"><i class="fas fa-headset"></i>Support</a>
-</div>
-
-<div class="container">
-  <h2>📝 Register</h2>
-
-  <div class="input-group">
-    <i class="fas fa-envelope"></i>
-    <input type="email" id="email" placeholder="Email">
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="profile.html">👤 Profile</a>
+    <a href="user-managment.html">📋 User Request</a>
+    <a href="order-history.html">📜 History</a>
+    <a href="login.html">🚪 Login</a>
   </div>
 
-  <div class="input-group">
-    <i class="fas fa-lock"></i>
-    <input type="password" id="password" placeholder="Password">
-  </div>
+  <!-- Main -->
+  <main>
+    <div class="register-card">
+      <h2>Register</h2>
+      <label>Email</label>
+      <input type="email" id="email" placeholder="Enter email" required/>
 
-  <div class="input-group">
-    <i class="fas fa-lock"></i>
-    <input type="password" id="confirmPassword" placeholder="Confirm Password">
-  </div>
+      <label>Password</label>
+      <div style="position:relative;">
+        <input type="password" id="password" placeholder="Enter password" required/>
+        <span class="toggle-password" id="togglePassword1">Show</span>
+      </div>
 
-  <div class="options">
-    <label><input type="checkbox" id="showPass"> Show password</label>
-  </div>
+      <label>Confirm Password</label>
+      <div style="position:relative;">
+        <input type="password" id="confirmPassword" placeholder="Confirm password" required/>
+        <span class="toggle-password" id="togglePassword2">Show</span>
+      </div>
 
-  <button class="nav-btn" id="registerBtn">Register</button>
-  <button class="extra-btn" id="googleBtn">Continue with Google</button>
-  <button class="extra-btn" id="loginBtn">Login</button>
+      <button class="register-btn" id="registerBtn">Register</button>
+      <button class="google-btn" id="googleBtn">Continue with Google</button>
 
-  <p class="msg" id="msg"></p>
-</div>
+      <div class="login-link">
+        Already have an account? <a href="login.html">Login</a>
+      </div>
+    </div>
+  </main>
 
-<script type="module" src="main.js"></script>
-<script>
-pageRegister(); // Initialize register page functionality
-</script>
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
+      authDomain: "diamond-recharge-f7f59.firebaseapp.com",
+      projectId: "diamond-recharge-f7f59",
+      storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
+      messagingSenderId: "657717928489",
+      appId: "1:657717928489:web:70431ebc9afb7002d4b238",
+      measurementId: "G-TDK78BQ8SQ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // Sidebar toggle
+    document.querySelector(".menu-toggle").addEventListener("click", () => {
+      document.getElementById("sidebar").classList.toggle("active");
+    });
+
+    // Show/Hide password
+    function togglePasswordField(inputId, toggleId) {
+      const toggle = document.getElementById(toggleId);
+      const field = document.getElementById(inputId);
+      toggle.addEventListener("click", () => {
+        const type = field.type === "password" ? "text" : "password";
+        field.type = type;
+        toggle.textContent = type === "password" ? "Show" : "Hide";
+      });
+    }
+    togglePasswordField("password", "togglePassword1");
+    togglePasswordField("confirmPassword", "togglePassword2");
+
+    // Register with Email & Password
+    document.getElementById("registerBtn").addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if(password !== confirmPassword){
+        alert("Passwords do not match!");
+        return;
+      }
+
+      try {
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        // Optional: set default display name
+        await updateProfile(userCred.user, { displayName: email.split("@")[0] });
+        alert("Registration successful!");
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        alert("Registration Failed: " + error.message);
+      }
+    });
+
+    // Google Signup/Login
+    document.getElementById("googleBtn").addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, provider);
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        alert("Google Signup/Login Failed: " + error.message);
+      }
+    });
+  </script>
 </body>
 </html>
