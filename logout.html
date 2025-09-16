@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Logout - Sarkar Telecom</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f1824;
+      color: #fff;
+      text-align: center;
+      padding-top: 100px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1b2735;
+      padding: 10px 15px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-sizing: border-box;
+    }
+    .menu-toggle { font-size: 24px; cursor: pointer; background: none; border: none; color: #fff; }
+    .site-title { font-weight: bold; font-size: 18px; text-align: center; flex: 1; }
+    .profile img { width: 40px; height: 40px; border-radius: 50%; }
+    .sidebar { position: fixed; left: -250px; top: 0; width: 250px; height: 100%; background: #1c2431; padding-top: 60px; transition: left 0.3s ease; z-index: 999; }
+    .sidebar.active { left: 0; }
+    .sidebar a { display: block; padding: 12px 20px; text-decoration: none; color: #fff; border-bottom: 1px solid #2a3445; }
+    .sidebar a:hover { background: #2f3c52; }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="menu-toggle">☰</button>
+    <div class="site-title">SARKAR TELECOM</div>
+    <div class="profile">
+      <img src="https://via.placeholder.com/40" alt="Profile">
+    </div>
+  </header>
+  <div class="sidebar" id="sidebar">
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="profile.html">👤 Profile</a>
+    <a href="login.html">🚪 Login</a>
+  </div>
+
+  <h2>Logging out...</h2>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
+      authDomain: "diamond-recharge-f7f59.firebaseapp.com",
+      projectId: "diamond-recharge-f7f59",
+      storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
+      messagingSenderId: "657717928489",
+      appId: "1:657717928489:web:70431ebc9afb7002d4b238",
+      measurementId: "G-TDK78BQ8SQ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Sidebar toggle
+    document.querySelector(".menu-toggle").addEventListener("click", () => {
+      document.getElementById("sidebar").classList.toggle("active");
+    });
+
+    // Logout
+    signOut(auth).then(() => {
+      setTimeout(()=>{ window.location.href = "login.html"; }, 1000);
+    }).catch((error) => {
+      alert("Logout failed: " + error.message);
+    });
+  </script>
+</body>
+</html>
