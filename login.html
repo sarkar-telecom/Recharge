@@ -1,55 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - SARKAR TELECOM</title>
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- Style -->
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Diamond Recharge</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
 </head>
-<body data-page="login">
+<body>
 
-  <!-- Header / Navbar -->
-  <header class="header">
-    <div class="logo">SARKAR TELECOM</div>
-    <nav class="nav">
-      <a href="login.html" class="active"><i class="fas fa-sign-in-alt"></i> Login</a>
-      <a href="register.html"><i class="fas fa-user-plus"></i> Register</a>
-    </nav>
-  </header>
-
-  <!-- Login Container -->
-  <div class="container glass">
-    <h2>🔐 Login</h2>
-
-    <div class="input-group">
-      <i class="fas fa-envelope"></i>
-      <input type="email" id="email" placeholder="Email">
+<header>
+  <div class="menu-toggle" id="menuToggle">☰</div>
+  <div class="site-title">Diamond Recharge</div>
+  <div class="dropdown">
+    <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar" id="avatarBtn">
+    <div class="dropdown-content" id="dropdownMenu">
+      <a href="#" id="profileLink">Profile</a>
+      <a href="#" id="authLink">Login</a>
     </div>
+  </div>
+</header>
 
-    <div class="input-group">
-      <i class="fas fa-lock"></i>
-      <input type="password" id="password" placeholder="Password">
-    </div>
+<div class="overlay" id="overlay"></div>
 
-    <div class="options">
-      <label><input type="checkbox" id="rememberMe"> Remember me</label>
-      <label><input type="checkbox" id="showPass"> Show password</label>
-    </div>
+<div class="sidebar" id="sidebar">
+  <a href="#"><i class="fas fa-home"></i>Home</a>
+  <a href="#"><i class="fas fa-gem"></i>Recharge</a>
+  <a href="#"><i class="fas fa-list"></i>Orders</a>
+  <a href="#"><i class="fas fa-headset"></i>Support</a>
+</div>
 
-    <button class="nav-btn" id="loginBtn"><i class="fas fa-lock"></i> Login</button>
-    <button class="extra-btn" id="googleBtn"><i class="fab fa-google"></i> Continue with Google</button>
-    <button class="extra-btn" id="registerBtn"><i class="fas fa-user-plus"></i> Register</button>
-    <button class="extra-btn" id="forgotBtn"><i class="fas fa-envelope-open-text"></i> Forgot Password?</button>
+<div class="container">
+  <h2>🔐 Login</h2>
 
-    <p class="msg" id="msg"></p>
+  <div class="input-group">
+    <i class="fas fa-envelope"></i>
+    <input type="email" id="email" placeholder="Email">
   </div>
 
-  <!-- JS -->
-  <script type="module" src="main.js"></script>
+  <div class="input-group">
+    <i class="fas fa-lock"></i>
+    <input type="password" id="password" placeholder="Password">
+  </div>
+
+  <div class="options">
+    <label><input type="checkbox" id="rememberMe"> Remember me</label>
+    <label><input type="checkbox" id="showPass"> Show password</label>
+  </div>
+
+  <button class="nav-btn" id="loginBtn">Login</button>
+  <button class="extra-btn" id="googleBtn">Continue with Google</button>
+  <button class="extra-btn" id="registerBtn">Register</button>
+  <button class="extra-btn" id="forgotBtn">Forgot Password?</button>
+
+  <p class="msg" id="msg"></p>
+</div>
+
+<script type="module" src="main.js"></script>
+<script>
+pageLogin(); // Initialize login page functionality
+</script>
 </body>
 </html>
