@@ -1,126 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-<head> 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diamond Recharge</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-body { margin:0; font-family:'Orbitron',sans-serif; background:#0d0d0d; color:#fff; overflow-x:hidden; }
-/* Header */
-header{position:fixed;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:rgba(0,0,0,0.3);backdrop-filter:blur(10px);border-bottom:1px solid #0ff;box-shadow:0 0 10px #0ff;z-index:1001;}
-.menu-toggle{cursor:pointer;font-size:26px;color:#0ff;transition:.3s;}
-.menu-toggle:hover{color:#0f0;text-shadow:0 0 10px #0f0;}
-.site-title{font-size:20px;font-weight:700;color:#0ff;text-shadow:0 0 8px #0ff;}
-.avatar{width:40px;height:40px;border-radius:50%;cursor:pointer;object-fit:cover;border:2px solid #0ff;box-shadow:0 0 10px #0ff;transition:.3s;}
-.avatar:hover{box-shadow:0 0 15px #0f0;border-color:#0f0;}
-.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);backdrop-filter:blur(5px);z-index:998;display:none;transition:.3s;}
-.sidebar{position:fixed;top:0;left:-250px;width:250px;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);padding-top:60px;transition:left .3s ease;z-index:1000;border-right:1px solid #0ff;box-shadow:0 0 15px #0ff inset;}
-.sidebar.open{left:0;}
-.sidebar a{display:flex;align-items:center;padding:15px 25px;color:#0ff;text-decoration:none;font-weight:500;text-shadow:0 0 5px #0ff;transition:.3s;}
-.sidebar a i{margin-right:15px;width:20px;text-align:center;}
-.sidebar a:hover{color:#0f0;text-shadow:0 0 10px #0f0;}
-.dropdown{position:relative;display:inline-block;}
-.dropdown-content{display:none;position:absolute;right:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);min-width:150px;box-shadow:0 0 15px #0ff;border-radius:8px;}
-.dropdown-content a{padding:10px;display:block;text-decoration:none;color:#0ff;font-weight:500;text-shadow:0 0 5px #0ff;}
-.dropdown-content a:hover{color:#0f0;text-shadow:0 0 10px #0f0;background:rgba(0,255,0,.1);}
-.dropdown.show .dropdown-content{display:block;}
-@media(max-width:600px){.site-title{font-size:16px;}.sidebar{width:200px;}}
-</style>
-</head>
-<body>
-
+<!-- header.html -->
 <header>
-  <div class="menu-toggle" id="menuToggle">☰</div>
-  <div class="site-title">Diamond Recharge</div>
-  <div class="dropdown" id="avatarDropdown">
-    <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar" id="avatarBtn">
-    <div class="dropdown-content" id="dropdownMenu">
-      <a href="profile.html" id="profileLink">Profile</a>
-      <a href="#" id="authLink">Logout</a>
+  <button class="menu-toggle">☰</button>
+  <div class="site-title">SARKAR TELECOM</div>
+  <div class="profile" id="profileMenu">
+    <img id="profilePic" src="https://via.placeholder.com/40" alt="Profile">
+    <div class="dropdown" id="dropdownMenu">
+      <a href="profile.html">Profile</a>
+      <a href="#" id="logoutBtn">Logout</a>
     </div>
   </div>
 </header>
 
-<div class="overlay" id="overlay"></div>
-
+<!-- Sidebar -->
 <div class="sidebar" id="sidebar">
-  <a href="#"><i class="fas fa-home"></i>Home</a>
-  <a href="#"><i class="fas fa-gem"></i>Recharge</a>
-  <a href="#"><i class="fas fa-list"></i>Orders</a>
-  <a href="#"><i class="fas fa-headset"></i>Support</a>
+  <a href="dashboard.html">📊 Dashboard</a>
+  <a href="profile.html">👤 Profile</a>
+  <a href="user-managment.html">📋 User Request</a>
+  <a href="order-history.html">📜 History</a>
 </div>
 
-<!-- Firebase -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
-  authDomain: "diamond-recharge-f7f59.firebaseapp.com",
-  projectId: "diamond-recharge-f7f59",
-  storageBucket: "diamond-recharge-f7f59.appspot.com",
-  messagingSenderId: "657717928489",
-  appId: "1:657717928489:web:70431ebc9afb7002d4b238"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// Elements
-const menuToggle=document.getElementById("menuToggle");
-const sidebar=document.getElementById("sidebar");
-const overlay=document.getElementById("overlay");
-const avatarBtn=document.getElementById("avatarBtn");
-const avatarDropdown=document.getElementById("avatarDropdown");
-const dropdownMenu=document.getElementById("dropdownMenu");
-const profileLink=document.getElementById("profileLink");
-const authLink=document.getElementById("authLink");
-
-// Sidebar toggle
-menuToggle.addEventListener("click",()=>{
-  sidebar.classList.toggle("open");
-  overlay.style.display = sidebar.classList.contains("open") ? "block" : "none";
-});
-overlay.addEventListener("click",()=>{
-  sidebar.classList.remove("open");
-  overlay.style.display="none";
-});
-
-// Avatar dropdown toggle
-avatarBtn.addEventListener("click",()=>avatarDropdown.classList.toggle("show"));
-
-// Close dropdown if clicked outside
-window.addEventListener("click",e=>{
-  if(!avatarDropdown.contains(e.target)){avatarDropdown.classList.remove("show");}
-});
-
-// Load Firebase Auth user
-onAuthStateChanged(auth,user=>{
-  if(user){
-    // Load avatar from Firestore
-    getDoc(doc(db,"users",user.uid)).then(docSnap=>{
-      if(docSnap.exists() && docSnap.data().avatarUrl){
-        avatarBtn.src=docSnap.data().avatarUrl;
-      } else {
-        avatarBtn.src="https://via.placeholder.com/40";
-      }
-    });
-    profileLink.href="profile.html";
-    authLink.textContent="Logout";
-    authLink.onclick=()=>{signOut(auth).then(()=>location.reload());};
-  } else {
-    avatarBtn.src="https://via.placeholder.com/40";
-    profileLink.href="#";
-    authLink.textContent="Login";
-    authLink.onclick=()=>{location.href="login.html";};
+<style>
+  /* Header */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1b2735;
+    padding: 10px 15px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-sizing: border-box;
   }
-});
-</script>
+  .menu-toggle { font-size: 24px; cursor: pointer; background:none; border:none; color:#fff; }
+  .site-title { font-weight: bold; font-size: 18px; flex:1; text-align:center; }
+  .profile { position: relative; padding-left: 8px; cursor: pointer; }
+  .profile img { width:40px; height:40px; border-radius:50%; }
+  .dropdown {
+    position: absolute;
+    right:0;
+    top:50px;
+    background:#fff;
+    color:#333;
+    min-width:160px;
+    border-radius:6px;
+    display:none;
+    flex-direction: column;
+    box-shadow:0 4px 6px rgba(0,0,0,0.2);
+  }
+  .dropdown a {
+    padding:10px;
+    text-decoration:none;
+    color:#333;
+    border-bottom:1px solid #eee;
+  }
+  .dropdown a:hover { background:#f0f0f0; }
 
-</body>
-</html>
+  /* Sidebar */
+  .sidebar {
+    position: fixed;
+    left: -250px;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background: #1c2431;
+    padding-top: 60px;
+    transition: left 0.3s ease;
+    z-index: 999;
+  }
+  .sidebar.active { left: 0; }
+  .sidebar a {
+    display:block;
+    padding:12px 20px;
+    text-decoration:none;
+    color:#fff;
+    border-bottom:1px solid #2a3445;
+  }
+  .sidebar a:hover { background:#2f3c52; }
+</style>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
+    authDomain: "diamond-recharge-f7f59.firebaseapp.com",
+    projectId: "diamond-recharge-f7f59",
+    storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
+    messagingSenderId: "657717928489",
+    appId: "1:657717928489:web:70431ebc9afb7002d4b238",
+    measurementId: "G-TDK78BQ8SQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Sidebar toggle
+  document.querySelector(".menu-toggle").addEventListener("click", () => {
+    document.getElementById("sidebar").classList.toggle("active");
+  });
+
+  // Profile dropdown toggle
+  const profileMenu = document.getElementById("profileMenu");
+  const dropdownMenu = document.getElementById("dropdownMenu");
+  profileMenu.addEventListener("click", () => {
+    dropdownMenu.style.display = dropdownMenu.style.display === "flex" ? "none" : "flex";
+  });
+
+  // Load user info
+  onAuthStateChanged(auth, async (user) => {
+    if(user){
+      document.getElementById("profilePic").src = user.photoURL || "https://via.placeholder.com/40";
+
+      // Optional: Firestore extra info
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if(docSnap.exists()){
+        const data = docSnap.data();
+        if(data.avatar) document.getElementById("profilePic").src = data.avatar;
+      }
+    } else {
+      window.location.href = "login.html";
+    }
+  });
+
+  // Logout
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    signOut(auth).then(()=>{ window.location.href="login.html"; });
+  });
+</script>
