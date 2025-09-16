@@ -186,6 +186,71 @@ if (document.getElementById("registerForm")) {
   });
 }
 
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// Sidebar toggle
+document.getElementById("menuToggle").addEventListener("click", () => {
+  document.getElementById("sidebar").classList.toggle("active");
+});
+
+// Dropdown toggle
+const profileMenu = document.getElementById("profileMenu");
+profileMenu.addEventListener("click", () => {
+  document.getElementById("dropdownMenu").style.display =
+    document.getElementById("dropdownMenu").style.display === "flex" ? "none" : "flex";
+});
+
+// Auth check
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const userRef = doc(db, "users", user.uid);
+    const snap = await getDoc(userRef);
+
+    if (snap.exists()) {
+      const data = snap.data();
+
+      // load profile info
+      document.getElementById("userPhoto").src = data.avatar || "https://via.placeholder.com/100";
+      document.getElementById("avatarBtn").src = data.avatar || "https://via.placeholder.com/40";
+
+      document.getElementById("email").value = user.email;
+      document.getElementById("role").value = data.role || "";
+      document.getElementById("balance").value = data.balance || 0;
+      document.getElementById("approved").value = data.approved ? "Yes" : "No";
+      document.getElementById("tier").value = data.tier || 0;
+      document.getElementById("weeklyDiamonds").value = data.weeklyDiamonds || 0;
+      document.getElementById("weeklyTotal").value = data.weeklyTotal || 0;
+
+      document.getElementById("avatar").value = data.avatar || "";
+      document.getElementById("name").value = data.name || "";
+      document.getElementById("phone").value = data.phone || "";
+    }
+
+    // Update profile
+    document.getElementById("profileForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      await updateDoc(userRef, {
+        avatar: document.getElementById("avatar").value,
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+      });
+
+      alert("Profile updated successfully!");
+      location.reload();
+    });
+
+  } else {
+    window.location.href = "login.html";
+  }
+});
+
+// Logout
+document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
+document.getElementById("logoutBtn2").addEventListener("click", () => signOut(auth));
+
 // Reset password
 if (document.getElementById("resetForm")) {
   document.getElementById("resetForm").addEventListener("submit", (e) => {
