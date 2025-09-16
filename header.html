@@ -30,12 +30,30 @@
     position: fixed;
     top: 0;
     width: 100%;
+    max-width: 100%;
     z-index: 1000;
     box-sizing: border-box;
   }
-  .menu-toggle { font-size: 24px; cursor: pointer; background:none; border:none; color:#fff; }
-  .site-title { font-weight: bold; font-size: 18px; flex:1; text-align:center; }
-  .profile { position: relative; padding-left: 8px; cursor: pointer; }
+  .menu-toggle { 
+    font-size: 24px; 
+    cursor: pointer; 
+    background: none; 
+    border: none; 
+    color: #fff; 
+  }
+  .site-title { 
+    font-weight: bold; 
+    font-size: 18px; 
+    flex: 1; 
+    text-align: center; 
+    color: orange; 
+    text-shadow: 0 0 8px yellow, 0 0 10px orange;
+  }
+  .profile { 
+    position: relative; 
+    padding-left: 8px; 
+    cursor: pointer; 
+  }
   .profile img { width:40px; height:40px; border-radius:50%; }
   .dropdown {
     position: absolute;
