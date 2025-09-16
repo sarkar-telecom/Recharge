@@ -1,131 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sarkar Telecom Profile</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background: #f2f2f2;
-    }
-    header {
-      background: #111;
+      font-family: Arial, sans-serif;
+      background: #0f1824;
       color: #fff;
-      padding: 15px;
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
     }
-    .container {
-      max-width: 600px;
-      margin: 20px auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .avatar {
+
+    /* Header */
+    header {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
+      align-items: center;
+      background: #1b2735;
+      padding: 10px 15px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-sizing: border-box;
+    }
+    .menu-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #fff;
+    }
+    .site-title {
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      flex: 1;
+    }
+    .profile {
+      position: relative;
+      cursor: pointer;
+      padding-left: 8px;
+    }
+    .profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: block;
+    }
+    .dropdown {
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: #fff;
+      color: #333;
+      min-width: 160px;
+      border-radius: 6px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    .dropdown a {
+      padding: 10px;
+      text-decoration: none;
+      color: #333;
+      border-bottom: 1px solid #eee;
+    }
+    .dropdown a:hover {
+      background: #f0f0f0;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #1c2431;
+      padding-top: 60px;
+      transition: left 0.3s ease;
+      z-index: 999;
+    }
+    .sidebar.active {
+      left: 0;
+    }
+    .sidebar a {
+      display: block;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: #fff;
+      border-bottom: 1px solid #2a3445;
+    }
+    .sidebar a:hover {
+      background: #2f3c52;
+    }
+
+    /* Main */
+    main {
+      margin-top: 80px;
+      padding: 20px;
+      text-align: center;
+    }
+    .user-card {
+      background: #1c2431;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 450px;
+      margin: auto;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      text-align: left;
+    }
+    .avatar-preview {
+      text-align: center;
       margin-bottom: 20px;
     }
-    .avatar img {
+    .avatar-preview img {
       width: 100px;
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
+      border: 2px solid #2f3c52;
     }
     form label {
       display: block;
       margin: 10px 0 5px;
       font-weight: bold;
+      font-size: 14px;
     }
     form input {
       width: 100%;
       padding: 8px;
       border-radius: 6px;
-      border: 1px solid #ccc;
+      border: 1px solid #444;
       margin-bottom: 12px;
       font-size: 14px;
+      background: #0f1824;
+      color: #fff;
     }
     .readonly {
-      background: #eee;
-      color: #555;
+      background: #2a3445;
+      color: #aaa;
     }
     button {
       width: 100%;
       padding: 10px;
       border: none;
       border-radius: 6px;
-      background: #111;
+      background: #00bcd4;
       color: #fff;
       font-size: 15px;
       font-weight: bold;
       cursor: pointer;
     }
     button:hover {
-      background: #333;
+      background: #0097a7;
     }
   </style>
 </head>
 <body>
+  <!-- Header -->
+  <header>
+    <button class="menu-toggle">☰</button>
+    <div class="site-title">SARKAR TELECOM</div>
+    <div class="profile" id="profileMenu">
+      <img id="profilePic" src="https://via.placeholder.com/40" alt="Profile">
+      <div class="dropdown" id="dropdownMenu">
+        <a href="profile.html">Profile</a>
+        <a href="logout.html" id="logoutBtn">Logout</a>
+      </div>
+    </div>
+  </header>
 
-<header>
-  Sarkar Telecom Profile
-</header>
-
-<div class="container">
-  <div class="avatar">
-    <img id="avatarPreview" src="https://via.placeholder.com/100" alt="User Avatar">
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="profile.html">👤 Profile</a>
+    <a href="user-managment.html">📋 User Request</a>
+    <a href="order-history.html">📜 History</a>
+    <a href="logout.html" id="logoutBtn2">🚪 Logout</a>
   </div>
 
-  <form id="profileForm">
-    <!-- Readonly fields -->
-    <label>Email</label>
-    <input type="email" id="email" class="readonly" readonly>
+  <!-- Main -->
+  <main>
+    <div class="user-card">
+      <div class="avatar-preview">
+        <img id="avatarPreview" src="https://via.placeholder.com/100" alt="User Avatar">
+      </div>
+      <form id="profileForm">
+        <!-- Readonly fields -->
+        <label>Email</label>
+        <input type="email" id="email" class="readonly" readonly>
 
-    <label>Role</label>
-    <input type="text" id="role" class="readonly" readonly>
+        <label>Role</label>
+        <input type="text" id="role" class="readonly" readonly>
 
-    <label>Balance</label>
-    <input type="number" id="balance" class="readonly" readonly>
+        <label>Balance</label>
+        <input type="number" id="balance" class="readonly" readonly>
 
-    <label>Approved</label>
-    <input type="text" id="approved" class="readonly" readonly>
+        <label>Approved</label>
+        <input type="text" id="approved" class="readonly" readonly>
 
-    <label>Tier</label>
-    <input type="number" id="tier" class="readonly" readonly>
+        <label>Tier</label>
+        <input type="number" id="tier" class="readonly" readonly>
 
-    <label>Weekly Diamonds</label>
-    <input type="number" id="weeklyDiamonds" class="readonly" readonly>
+        <label>Weekly Diamonds</label>
+        <input type="number" id="weeklyDiamonds" class="readonly" readonly>
 
-    <label>Weekly Total</label>
-    <input type="number" id="weeklyTotal" class="readonly" readonly>
+        <label>Weekly Total</label>
+        <input type="number" id="weeklyTotal" class="readonly" readonly>
 
-    <!-- Editable fields -->
-    <label>Avatar URL</label>
-    <input type="text" id="avatar">
+        <!-- Editable fields -->
+        <label>Avatar URL</label>
+        <input type="text" id="avatar">
 
-    <label>Name</label>
-    <input type="text" id="name">
+        <label>Name</label>
+        <input type="text" id="name">
 
-    <label>Phone</label>
-    <input type="text" id="phone">
+        <label>Phone</label>
+        <input type="text" id="phone">
 
-    <button type="submit">Update Profile</button>
-  </form>
-</div>
+        <button type="submit">Update Profile</button>
+      </form>
+    </div>
+  </main>
 
-<script>
-  // Avatar preview update
-  const avatarInput = document.getElementById('avatar');
-  const avatarPreview = document.getElementById('avatarPreview');
-  avatarInput.addEventListener('input', () => {
-    avatarPreview.src = avatarInput.value || "https://via.placeholder.com/100";
-  });
-</script>
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
+      authDomain: "diamond-recharge-f7f59.firebaseapp.com",
+      projectId: "diamond-recharge-f7f59",
+      storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
+      messagingSenderId: "657717928489",
+      appId: "1:657717928489:web:70431ebc9afb7002d4b238",
+      measurementId: "G-TDK78BQ8SQ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Sidebar toggle
+    document.querySelector(".menu-toggle").addEventListener("click", () => {
+      document.getElementById("sidebar").classList.toggle("active");
+    });
+
+    // Profile dropdown
+    const profileMenu = document.getElementById("profileMenu");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    profileMenu.addEventListener("click", () => {
+      dropdownMenu.style.display = dropdownMenu.style.display === "flex" ? "none" : "flex";
+    });
+
+    // Load user info
+    let currentUserId = null;
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUserId = user.uid;
+        document.getElementById("email").value = user.email;
+        document.getElementById("profilePic").src = user.photoURL || "https://via.placeholder.com/40";
+
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          document.getElementById("name").value = data.name || "";
+          document.getElementById("phone").value = data.phone || "";
+          document.getElementById("avatar").value = data.avatar || "";
+          document.getElementById("avatarPreview").src = data.avatar || "https://via.placeholder.com/100";
+
+          // readonly fields
+          if (data.role) document.getElementById("role").value = data.role;
+          if (data.balance !== undefined) document.getElementById("balance").value = data.balance;
+          if (data.approved) document.getElementById("approved").value = data.approved;
+          if (data.tier !== undefined) document.getElementById("tier").value = data.tier;
+          if (data.weeklyDiamonds !== undefined) document.getElementById("weeklyDiamonds").value = data.weeklyDiamonds;
+          if (data.weeklyTotal !== undefined) document.getElementById("weeklyTotal").value = data.weeklyTotal;
+        }
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    // Avatar live preview
+    document.getElementById("avatar").addEventListener("input", (e) => {
+      document.getElementById("avatarPreview").src = e.target.value || "https://via.placeholder.com/100";
+    });
+
+    // Update profile
+    document.getElementById("profileForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentUserId) return;
+      const docRef = doc(db, "users", currentUserId);
+      await updateDoc(docRef, {
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        avatar: document.getElementById("avatar").value
+      });
+      alert("Profile updated successfully!");
+    });
+
+    // Logout
+    function doLogout() {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      });
+    }
+    document.getElementById("logoutBtn").addEventListener("click", doLogout);
+    document.getElementById("logoutBtn2").addEventListener("click", doLogout);
+  </script>
 </body>
 </html>
