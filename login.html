@@ -1,29 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login — Diamond Recharge</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sarkar Telecom Login</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f1824;
+      color: #fff;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1b2735;
+      padding: 10px 15px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-sizing: border-box;
+    }
+    .menu-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #fff;
+    }
+    .site-title {
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      flex: 1;
+    }
+    .profile {
+      position: relative;
+      padding-left: 8px;
+    }
+    .profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #1c2431;
+      padding-top: 60px;
+      transition: left 0.3s ease;
+      z-index: 999;
+    }
+    .sidebar.active {
+      left: 0;
+    }
+    .sidebar a {
+      display: block;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: #fff;
+      border-bottom: 1px solid #2a3445;
+    }
+    .sidebar a:hover {
+      background: #2f3c52;
+    }
+
+    /* Main */
+    main {
+      margin-top: 80px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* Login Card */
+    .login-card {
+      background: #1c2431;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      text-align: left;
+    }
+    .login-card h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .login-card label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    .login-card input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 10px;
+    }
+    .login-card button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .login-btn {
+      background: #007bff;
+      color: #fff;
+    }
+    .google-btn {
+      background: #db4437;
+      color: #fff;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      top: 38px;
+      cursor: pointer;
+      color: #333;
+      font-size: 14px;
+      background: #eee;
+      padding: 3px 6px;
+      border-radius: 4px;
+    }
+    .extra-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+    .extra-options a {
+      color: #00bfff;
+      text-decoration: none;
+    }
+    .register-link {
+      text-align: center;
+      margin-top: 15px;
+    }
+    .register-link a {
+      color: #00bfff;
+      text-decoration: none;
+    }
+  </style>
 </head>
-<body class="login-page">
-  <div class="login-container">
-    <h1 class="title">Diamond Recharge</h1>
-    <form id="loginForm">
-      <label>Email</label>
-      <input type="email" id="email" required placeholder="Enter your email">
+<body>
+  <!-- Header -->
+  <header>
+    <button class="menu-toggle">☰</button>
+    <div class="site-title">SARKAR TELECOM</div>
+    <div class="profile">
+      <img src="https://via.placeholder.com/40" alt="Profile">
+    </div>
+  </header>
 
-      <label>Password</label>
-      <input type="password" id="password" required placeholder="Enter your password">
-
-      <button type="submit" class="btn">Login</button>
-    </form>
-    <p id="status" class="status"></p>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="profile.html">👤 Profile</a>
+    <a href="user-managment.html">📋 User Request</a>
+    <a href="order-history.html">📜 History</a>
+    <a href="login.html">🚪 Login</a>
   </div>
 
+  <!-- Main -->
+  <main>
+    <div class="login-card">
+      <h2>Login</h2>
+      <label>Email</label>
+      <input type="email" id="email" placeholder="Enter email" required/>
+
+      <label>Password</label>
+      <div style="position:relative;">
+        <input type="password" id="password" placeholder="Enter password" required/>
+        <span class="toggle-password" id="togglePassword">Show</span>
+      </div>
+
+      <div class="extra-options">
+        <label><input type="checkbox" id="rememberMe"/> Remember me</label>
+        <a href="#" id="forgotPassword">Forgot password?</a>
+      </div>
+
+      <button class="login-btn" id="loginBtn">Login</button>
+      <button class="google-btn" id="googleBtn">Continue with Google</button>
+
+      <div class="register-link">
+        Don’t have an account? <a href="register.html">Register</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
@@ -37,103 +220,73 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
-    // ✅ Login Form
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+    // Sidebar toggle
+    document.querySelector(".menu-toggle").addEventListener("click", () => {
+      document.getElementById("sidebar").classList.toggle("active");
+    });
 
-      const statusEl = document.getElementById("status");
-      statusEl.textContent = "⏳ Logging in...";
-      statusEl.style.color = "white";
+    // Show/Hide password
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordField = document.getElementById("password");
+    togglePassword.addEventListener("click", () => {
+      const type = passwordField.type === "password" ? "text" : "password";
+      passwordField.type = type;
+      togglePassword.textContent = type === "password" ? "Show" : "Hide";
+    });
 
+    // Remember me
+    const rememberMe = document.getElementById("rememberMe");
+    const emailInput = document.getElementById("email");
+
+    if (localStorage.getItem("savedEmail")) {
+      emailInput.value = localStorage.getItem("savedEmail");
+      rememberMe.checked = true;
+    }
+
+    // Login with Email & Password
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const email = emailInput.value;
+      const password = passwordField.value;
       try {
-        await signInWithEmailAndPassword(auth, email, password);
-        statusEl.textContent = "✅ Login successful!";
-        statusEl.style.color = "lightgreen";
-        setTimeout(() => {
-          window.location.href = "dashboard.html";
-        }, 800);
+        const userCred = await signInWithEmailAndPassword(auth, email, password);
+        if (rememberMe.checked) {
+          localStorage.setItem("savedEmail", email);
+        } else {
+          localStorage.removeItem("savedEmail");
+        }
+        window.location.href = "dashboard.html";
       } catch (error) {
-        console.error(error);
-        statusEl.textContent = "❌ " + error.message;
-        statusEl.style.color = "red";
+        alert("Login Failed: " + error.message);
       }
     });
 
-    // ✅ Already logged in → go dashboard
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
+    // Google Login
+    document.getElementById("googleBtn").addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, provider);
         window.location.href = "dashboard.html";
+      } catch (error) {
+        alert("Google Login Failed: " + error.message);
+      }
+    });
+
+    // Forgot Password
+    document.getElementById("forgotPassword").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const email = emailInput.value;
+      if (!email) {
+        alert("Please enter your email first.");
+        return;
+      }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        alert("Password reset email sent!");
+      } catch (error) {
+        alert("Error: " + error.message);
       }
     });
   </script>
-
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #fff;
-    }
-    .login-container {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 30px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-      backdrop-filter: blur(10px);
-    }
-    .title {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #00e5ff;
-      text-shadow: 0 0 10px #00e5ff;
-    }
-    label {
-      display: block;
-      margin: 10px 0 5px;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      outline: none;
-      margin-bottom: 15px;
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-    input::placeholder {
-      color: #ccc;
-    }
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #00e5ff;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .btn:hover {
-      background: #00ffff;
-      box-shadow: 0 0 10px #00ffff;
-    }
-    .status {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-  </style>
 </body>
 </html>
