@@ -5,8 +5,8 @@
   <div class="profile" id="profileMenu">
     <img id="profilePic" src="https://via.placeholder.com/40" alt="Profile">
     <div class="dropdown" id="dropdownMenu">
-      <a href="profile.html">Profile</a>
-      <a href="#" id="logoutBtn">Logout</a>
+      <a href="profile.html">👤 Profile</a>
+      <a href="#" id="logoutBtn">🚪 Logout</a>
     </div>
   </div>
 </header>
@@ -61,7 +61,7 @@ header {
   font-size: 20px;
   text-align: center;
   flex: 1;
-  color: #ffd700; /* গোল্ডেন কালার */
+  color: #ffd700; /* Golden Neon */
   letter-spacing: 1px;
   text-transform: uppercase;
   text-shadow: 
@@ -73,6 +73,7 @@ header {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 /* Profile */
 .profile {
   position: relative;
@@ -84,6 +85,7 @@ header {
   height: 38px;
   border-radius: 50%;
   display: block;
+  border: 2px solid #ffd700; /* গোল্ডেন বর্ডার */
 }
 
 /* Dropdown */
@@ -104,6 +106,9 @@ header {
   text-decoration: none;
   color: #333;
   border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 .dropdown a:hover {
   background: #f0f0f0;
@@ -138,7 +143,7 @@ header {
 /* Mobile friendly */
 @media (max-width: 480px) {
   .site-title {
-    font-size: 16px; /* ছোট স্ক্রিনে ছোট font */
+    font-size: 16px;
     letter-spacing: 0.5px;
   }
   .menu-toggle {
