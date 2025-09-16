@@ -1,31 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile - Diamond Recharge</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile - Diamond Recharge</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <span id="menuBtn" style="cursor:pointer;font-size:24px;">☰</span>
-    <span class="header-title">Diamond Recharge</span>
-    <img src="https://via.placeholder.com/40" alt="avatar" id="profileAvatar" class="avatar">
-    <div class="dropdown" id="dropdown">
-      <a href="#" id="logoutBtn">Logout</a>
+
+<header>
+  <div class="menu-toggle" id="menuToggle">☰</div>
+  <div class="site-title">Diamond Recharge</div>
+  <div class="dropdown">
+    <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar" id="avatarBtn">
+    <div class="dropdown-content" id="dropdownMenu">
+      <a href="profile.html" id="profileLink">Profile</a>
+      <a href="#" id="authLink">Logout</a>
     </div>
-  </header>
-
-  <div class="sidebar" id="sidebar">
-    <a href="index.html">Home</a>
-    <a href="profile.html">Profile</a>
   </div>
+</header>
 
-  <main>
-    <h2>User Profile</h2>
-    <p>Email: <span id="userEmail"></span></p>
-  </main>
+<div class="overlay" id="overlay"></div>
 
-  <script type="module" src="main.js"></script>
+<div class="sidebar" id="sidebar">
+  <a href="#"><i class="fas fa-home"></i>Home</a>
+  <a href="#"><i class="fas fa-gem"></i>Recharge</a>
+  <a href="#"><i class="fas fa-list"></i>Orders</a>
+  <a href="#"><i class="fas fa-headset"></i>Support</a>
+</div>
+
+<div class="container">
+  <h2>👤 Profile</h2>
+  <img src="https://via.placeholder.com/80" alt="Profile Avatar" id="profileAvatar" class="avatar">
+  <p>Email: <span id="userEmail">user@example.com</span></p>
+  <button class="nav-btn" id="logoutBtn">Logout</button>
+</div>
+
+<script type="module" src="main.js"></script>
+<script>
+pageProfile(); // Initialize profile functionality
+</script>
 </body>
 </html>
