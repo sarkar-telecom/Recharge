@@ -1,64 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Diamond Recharge</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Diamond Recharge</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="login-page">
+  <div class="login-container">
+    <h1 class="title">Diamond Recharge</h1>
+    <form id="loginForm">
+      <label>Email</label>
+      <input type="email" id="email" required placeholder="Enter your email">
 
-<header>
-  <div class="menu-toggle" id="menuToggle">☰</div>
-  <div class="site-title">Diamond Recharge</div>
-  <div class="dropdown">
-    <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar" id="avatarBtn">
-    <div class="dropdown-content" id="dropdownMenu">
-      <a href="#" id="profileLink">Profile</a>
-      <a href="#" id="authLink">Login</a>
-    </div>
-  </div>
-</header>
+      <label>Password</label>
+      <input type="password" id="password" required placeholder="Enter your password">
 
-<div class="overlay" id="overlay"></div>
-
-<div class="sidebar" id="sidebar">
-  <a href="#"><i class="fas fa-home"></i>Home</a>
-  <a href="#"><i class="fas fa-gem"></i>Recharge</a>
-  <a href="#"><i class="fas fa-list"></i>Orders</a>
-  <a href="#"><i class="fas fa-headset"></i>Support</a>
-</div>
-
-<div class="container">
-  <h2>🔐 Login</h2>
-
-  <div class="input-group">
-    <i class="fas fa-envelope"></i>
-    <input type="email" id="email" placeholder="Email">
+      <button type="submit" class="btn">Login</button>
+    </form>
+    <p id="status" class="status"></p>
   </div>
 
-  <div class="input-group">
-    <i class="fas fa-lock"></i>
-    <input type="password" id="password" placeholder="Password">
-  </div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
-  <div class="options">
-    <label><input type="checkbox" id="rememberMe"> Remember me</label>
-    <label><input type="checkbox" id="showPass"> Show password</label>
-  </div>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
+      authDomain: "diamond-recharge-f7f59.firebaseapp.com",
+      projectId: "diamond-recharge-f7f59",
+      storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
+      messagingSenderId: "657717928489",
+      appId: "1:657717928489:web:70431ebc9afb7002d4b238",
+      measurementId: "G-TDK78BQ8SQ"
+    };
 
-  <button class="nav-btn" id="loginBtn">Login</button>
-  <button class="extra-btn" id="googleBtn">Continue with Google</button>
-  <button class="extra-btn" id="registerBtn">Register</button>
-  <button class="extra-btn" id="forgotBtn">Forgot Password?</button>
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  <p class="msg" id="msg"></p>
-</div>
+    // ✅ Login Form
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
 
-<script type="module" src="main.js"></script>
-<script>
-pageLogin(); // Initialize login page functionality
-</script>
+      const statusEl = document.getElementById("status");
+      statusEl.textContent = "⏳ Logging in...";
+      statusEl.style.color = "white";
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        statusEl.textContent = "✅ Login successful!";
+        statusEl.style.color = "lightgreen";
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 800);
+      } catch (error) {
+        console.error(error);
+        statusEl.textContent = "❌ " + error.message;
+        statusEl.style.color = "red";
+      }
+    });
+
+    // ✅ Already logged in → go dashboard
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = "dashboard.html";
+      }
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+    .login-container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+    }
+    .title {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00e5ff;
+      text-shadow: 0 0 10px #00e5ff;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+    input::placeholder {
+      color: #ccc;
+    }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #00e5ff;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background: #00ffff;
+      box-shadow: 0 0 10px #00ffff;
+    }
+    .status {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
 </body>
 </html>
