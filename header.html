@@ -34,11 +34,11 @@ header{position:fixed;top:0;width:100%;display:flex;justify-content:space-betwee
 <header>
   <div class="menu-toggle" id="menuToggle">☰</div>
   <div class="site-title">Diamond Recharge</div>
-  <div class="dropdown">
+  <div class="dropdown" id="avatarDropdown">
     <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar" id="avatarBtn">
     <div class="dropdown-content" id="dropdownMenu">
-      <a href="#" id="profileLink">Profile</a>
-      <a href="#" id="authLink">Login</a>
+      <a href="profile.html" id="profileLink">Profile</a>
+      <a href="#" id="authLink">Logout</a>
     </div>
   </div>
 </header>
@@ -52,55 +52,74 @@ header{position:fixed;top:0;width:100%;display:flex;justify-content:space-betwee
   <a href="#"><i class="fas fa-headset"></i>Support</a>
 </div>
 
-<script>
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
+  authDomain: "diamond-recharge-f7f59.firebaseapp.com",
+  projectId: "diamond-recharge-f7f59",
+  storageBucket: "diamond-recharge-f7f59.appspot.com",
+  messagingSenderId: "657717928489",
+  appId: "1:657717928489:web:70431ebc9afb7002d4b238"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
 // Elements
 const menuToggle=document.getElementById("menuToggle");
 const sidebar=document.getElementById("sidebar");
 const overlay=document.getElementById("overlay");
 const avatarBtn=document.getElementById("avatarBtn");
+const avatarDropdown=document.getElementById("avatarDropdown");
+const dropdownMenu=document.getElementById("dropdownMenu");
 const profileLink=document.getElementById("profileLink");
 const authLink=document.getElementById("authLink");
 
-// Sidebar open/close
+// Sidebar toggle
 menuToggle.addEventListener("click",()=>{
-  sidebar.classList.add("open");
-  overlay.style.display="block";
+  sidebar.classList.toggle("open");
+  overlay.style.display = sidebar.classList.contains("open") ? "block" : "none";
 });
 overlay.addEventListener("click",()=>{
   sidebar.classList.remove("open");
   overlay.style.display="none";
 });
 
-// Swipe gesture
-let touchStartX=0,touchEndX=0;
-document.addEventListener('touchstart',e=>touchStartX=e.changedTouches[0].screenX);
-document.addEventListener('touchend',e=>{
-  touchEndX=e.changedTouches[0].screenX;
-  if(touchStartX<50&&touchEndX-touchStartX>50){sidebar.classList.add("open");overlay.style.display="block";}
-  if(touchStartX-touchEndX>50){sidebar.classList.remove("open");overlay.style.display="none";}
+// Avatar dropdown toggle
+avatarBtn.addEventListener("click",()=>avatarDropdown.classList.toggle("show"));
+
+// Close dropdown if clicked outside
+window.addEventListener("click",e=>{
+  if(!avatarDropdown.contains(e.target)){avatarDropdown.classList.remove("show");}
 });
 
-// Avatar dropdown
-avatarBtn.addEventListener("click",()=>avatarBtn.parentElement.classList.toggle("show"));
-
-// Placeholder auth simulation
-let isLoggedIn=false; // change to true to simulate login
-
-function updateAvatarUI(){
-  if(isLoggedIn){
-    avatarBtn.src="https://via.placeholder.com/40/0f0/000?text=U"; // simulate user avatar
+// Load Firebase Auth user
+onAuthStateChanged(auth,user=>{
+  if(user){
+    // Load avatar from Firestore
+    getDoc(doc(db,"users",user.uid)).then(docSnap=>{
+      if(docSnap.exists() && docSnap.data().avatarUrl){
+        avatarBtn.src=docSnap.data().avatarUrl;
+      } else {
+        avatarBtn.src="https://via.placeholder.com/40";
+      }
+    });
     profileLink.href="profile.html";
     authLink.textContent="Logout";
-    authLink.onclick=function(){isLoggedIn=false; updateAvatarUI(); alert("Logged out");};
+    authLink.onclick=()=>{signOut(auth).then(()=>location.reload());};
   } else {
     avatarBtn.src="https://via.placeholder.com/40";
     profileLink.href="#";
     authLink.textContent="Login";
-    authLink.onclick=function(){isLoggedIn=true; updateAvatarUI(); alert("Logged in");};
+    authLink.onclick=()=>{location.href="login.html";};
   }
-}
-
-updateAvatarUI();
+});
 </script>
 
 </body>
