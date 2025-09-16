@@ -1,56 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard</title>
+  <title>Sarkar Telecom Dashboard</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #0d1117;
+      background: #0f1824;
       color: #fff;
-      display: flex;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      width: 220px;
-      background: #161b22;
-      height: 100vh;
-      padding: 15px 10px;
-      box-sizing: border-box;
-      border-right: 1px solid #30363d;
-      position: fixed;
-      left: 0;
-      top: 0;
-    }
-    .sidebar h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 18px;
-      color: #58a6ff;
-    }
-    .sidebar a {
-      display: block;
-      padding: 10px 15px;
-      margin: 5px 0;
-      text-decoration: none;
-      color: #c9d1d9;
-      border-radius: 6px;
-      transition: background 0.2s;
-    }
-    .sidebar a:hover {
-      background: #21262d;
-    }
-
-    /* Main Content */
-    .main-content {
-      margin-left: 220px;
-      width: calc(100% - 220px);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
 
     /* Header */
@@ -58,78 +17,154 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 20px;
-      background: #161b22;
-      border-bottom: 1px solid #30363d;
+      background: #1b2735;
+      padding: 10px 15px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
       box-sizing: border-box;
     }
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .menu-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #fff;
     }
-    .user-info img {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    /* Content */
-    main {
-      padding: 20px;
+    .site-title {
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
       flex: 1;
     }
-    .card {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
+    .profile {
+      position: relative;
+      cursor: pointer;
+      padding-left: 8px; /* ✅ avatar এর জন্য সামান্য padding */
+    }
+    .profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: block;
+    }
+    .dropdown {
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: #fff;
+      color: #333;
+      min-width: 160px;
+      border-radius: 6px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    .dropdown a {
+      padding: 10px;
+      text-decoration: none;
+      color: #333;
+      border-bottom: 1px solid #eee;
+    }
+    .dropdown a:hover {
+      background: #f0f0f0;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #1c2431;
+      padding-top: 60px;
+      transition: left 0.3s ease;
+      z-index: 999;
+    }
+    .sidebar.active {
+      left: 0;
+    }
+    .sidebar a {
+      display: block;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: #fff;
+      border-bottom: 1px solid #2a3445;
+    }
+    .sidebar a:hover {
+      background: #2f3c52;
+    }
+
+    /* Main */
+    main {
+      margin-top: 80px;
+      padding: 20px;
+      text-align: center;
+    }
+    .user-card {
+      background: #1c2431;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+    .user-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    .user-card h2 {
+      margin: 10px 0;
+      font-size: 20px;
+    }
+    .user-card p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #aaa;
     }
   </style>
 </head>
 <body>
+  <!-- Header -->
+  <header>
+    <button class="menu-toggle">☰</button>
+    <div class="site-title">SARKAR TELECOM</div>
+    <div class="profile" id="profileMenu">
+      <img id="profilePic" src="https://via.placeholder.com/40" alt="Profile">
+      <div class="dropdown" id="dropdownMenu">
+        <a href="profile.html">Profile</a>
+        <a href="logout.html" id="logoutBtn">Logout</a>
+      </div>
+    </div>
+  </header>
+
   <!-- Sidebar -->
-  <nav class="sidebar">
-    <h2>📂 Menu</h2>
+  <div class="sidebar" id="sidebar">
     <a href="dashboard.html">📊 Dashboard</a>
     <a href="profile.html">👤 Profile</a>
-    <a href="order.html">🛒 Order</a>
-    <a href="order-history.html">📜 Order History</a>
-    <a href="reward.html">🎁 Rewards</a>
-    <a href="balance.html">💰 Balance</a>
-    <a href="user-managment.html">👥 Users</a>
-    <a href="admin.html">⚙️ Admin</a>
-    <a href="logout.html">🚪 Logout</a>
-  </nav>
-
-  <!-- Main Content -->
-  <div class="main-content">
-    <header>
-      <h2>🚀 Dashboard</h2>
-      <div class="user-info">
-        <span id="userName">Loading...</span>
-        <img id="userAvatar" src="https://via.placeholder.com/40" alt="avatar"/>
-      </div>
-    </header>
-
-    <main>
-      <div class="card">
-        <p><b>Email:</b> <span id="userEmail"></span></p>
-        <p><b>Balance:</b> <span id="userBalance"></span></p>
-        <p><b>Role:</b> <span id="userRole"></span></p>
-        <p><b>Weekly Diamonds:</b> <span id="userWeeklyDiamonds"></span></p>
-        <p><b>Weekly Total:</b> <span id="userWeeklyTotal"></span></p>
-      </div>
-    </main>
+    <a href="user-managment.html">📋 User Request</a>
+    <a href="order-history.html">📜 History</a>
+    <a href="logout.html" id="logoutBtn2">🚪 Logout</a>
   </div>
 
-  <!-- Firebase SDK -->
+  <!-- Main -->
+  <main>
+    <div class="user-card">
+      <img id="userPhoto" src="https://via.placeholder.com/80" alt="User Photo">
+      <h2 id="userName">Loading...</h2>
+      <p id="userEmail"></p>
+    </div>
+  </main>
+
+  <!-- Firebase -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
@@ -145,34 +180,50 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const userName = document.getElementById("userName");
-    const userEmail = document.getElementById("userEmail");
-    const userBalance = document.getElementById("userBalance");
-    const userRole = document.getElementById("userRole");
-    const userWeeklyDiamonds = document.getElementById("userWeeklyDiamonds");
-    const userWeeklyTotal = document.getElementById("userWeeklyTotal");
-    const userAvatar = document.getElementById("userAvatar");
+    // Sidebar toggle
+    document.querySelector(".menu-toggle").addEventListener("click", () => {
+      document.getElementById("sidebar").classList.toggle("active");
+    });
 
+    // Profile dropdown
+    const profileMenu = document.getElementById("profileMenu");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    profileMenu.addEventListener("click", () => {
+      dropdownMenu.style.display = dropdownMenu.style.display === "flex" ? "none" : "flex";
+    });
+
+    // Load user info
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const uid = user.uid;
-        const userDoc = await getDoc(doc(db, "users", uid));
-        if (userDoc.exists()) {
-          const data = userDoc.data();
-          userName.textContent = data.name || "No Name";
-          userEmail.textContent = data.email || user.email;
-          userBalance.textContent = data.balance ?? 0;
-          userRole.textContent = data.role || "user";
-          userWeeklyDiamonds.textContent = data.weeklyDiamonds ?? 0;
-          userWeeklyTotal.textContent = data.weeklyTotal ?? 0;
-          userAvatar.src = data.avatar || "https://via.placeholder.com/40";
-        } else {
-          alert("⚠️ User data not found in Firestore!");
+        document.getElementById("userName").textContent = user.displayName || "No Name";
+        document.getElementById("userEmail").textContent = user.email;
+        document.getElementById("userPhoto").src = user.photoURL || "https://via.placeholder.com/80";
+        document.getElementById("profilePic").src = user.photoURL || "https://via.placeholder.com/40";
+
+        // Firestore extra user info
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.name) document.getElementById("userName").textContent = data.name;
+          if (data.avatar) {
+            document.getElementById("userPhoto").src = data.avatar;
+            document.getElementById("profilePic").src = data.avatar;
+          }
         }
       } else {
         window.location.href = "login.html";
       }
     });
+
+    // Logout
+    function doLogout() {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      });
+    }
+    document.getElementById("logoutBtn").addEventListener("click", doLogout);
+    document.getElementById("logoutBtn2").addEventListener("click", doLogout);
   </script>
 </body>
 </html>
