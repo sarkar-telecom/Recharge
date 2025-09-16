@@ -1,50 +1,210 @@
-<script type="module">
-import { auth, db } from "./firebase.js";
-import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-
-const profileAvatar = document.getElementById("profileAvatar");
-const userName = document.getElementById("userName");
-const userEmail = document.getElementById("userEmail");
-const userPhone = document.getElementById("userPhone");
-const userBalance = document.getElementById("userBalance");
-const profileForm = document.getElementById("profileForm");
-
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    // 🔹 প্রথমে Auth থেকে লোড
-    profileAvatar.src = user.photoURL || "https://via.placeholder.com/100";
-    userName.value = user.displayName || "";
-    userEmail.value = user.email || "";
-
-    // 🔹 তারপর Firestore থেকে লোড (override করবে)
-    const ref = doc(db, "users", user.uid);
-    const snap = await getDoc(ref);
-    if (snap.exists()) {
-      const data = snap.data();
-      if (data.avatar) profileAvatar.src = data.avatar;
-      if (data.name) userName.value = data.name;
-      if (data.phone) userPhone.value = data.phone;
-      if (typeof data.balance !== "undefined") userBalance.value = data.balance;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sarkar Telecom - Profile Update</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f1824;
+      color: #fff;
     }
-  } else {
-    window.location.href = "login.html";
-  }
-});
+    header {
+      background: #1b2735;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    main {
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    form {
+      background: #1c2431;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+    form h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-size: 14px;
+      color: #ddd;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    input[type="checkbox"] {
+      width: auto;
+      margin-right: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      background: #00bcd4;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0097a7;
+    }
+    .status {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>Profile Update</header>
+  <main>
+    <form id="profileForm">
+      <h2>User Info</h2>
 
-// 🔹 Save updates
-profileForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const user = auth.currentUser;
-  if (!user) return;
+      <label>Name</label>
+      <input type="text" id="name"/>
 
-  const ref = doc(db, "users", user.uid);
-  await updateDoc(ref, {
-    name: userName.value,
-    phone: userPhone.value,
-    avatar: profileAvatar.src
-  });
+      <label>Email</label>
+      <input type="email" id="email" disabled/>
 
-  alert("✅ Profile updated successfully!");
-});
-</script>
+      <label>Phone</label>
+      <input type="text" id="phone"/>
+
+      <label>Avatar URL</label>
+      <input type="text" id="avatar"/>
+
+      <label>Balance</label>
+      <input type="number" id="balance"/>
+
+      <label>Role</label>
+      <select id="role">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+
+      <label>Tier</label>
+      <input type="number" id="tier"/>
+
+      <label>Week Boundary</label>
+      <input type="number" id="weekBoundary"/>
+
+      <label>Weekly Diamonds</label>
+      <input type="number" id="weeklyDiamonds"/>
+
+      <label>Weekly Total</label>
+      <input type="number" id="weeklyTotal"/>
+
+      <label>
+        <input type="checkbox" id="approved"/> Approved
+      </label>
+
+      <label>Refunded Orders (comma separated)</label>
+      <textarea id="refundedOrders"></textarea>
+
+      <button type="submit">Update Profile</button>
+      <div class="status" id="status"></div>
+    </form>
+  </main>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
+      authDomain: "diamond-recharge-f7f59.firebaseapp.com",
+      projectId: "diamond-recharge-f7f59",
+      storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
+      messagingSenderId: "657717928489",
+      appId: "1:657717928489:web:70431ebc9afb7002d4b238",
+      measurementId: "G-TDK78BQ8SQ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const form = document.getElementById("profileForm");
+    const status = document.getElementById("status");
+
+    let currentUid = null;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUid = user.uid;
+        const docRef = doc(db, "users", currentUid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          document.getElementById("name").value = data.name || "";
+          document.getElementById("email").value = data.email || user.email;
+          document.getElementById("phone").value = data.phone || "";
+          document.getElementById("avatar").value = data.avatar || "";
+          document.getElementById("balance").value = data.balance || 0;
+          document.getElementById("role").value = data.role || "user";
+          document.getElementById("tier").value = data.tier || 0;
+          document.getElementById("weekBoundary").value = data.weekBoundary || 0;
+          document.getElementById("weeklyDiamonds").value = data.weeklyDiamonds || 0;
+          document.getElementById("weeklyTotal").value = data.weeklyTotal || 0;
+          document.getElementById("approved").checked = data.approved || false;
+          document.getElementById("refundedOrders").value = data.refundedOrders ? data.refundedOrders.join(", ") : "";
+        }
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentUid) return;
+
+      const docRef = doc(db, "users", currentUid);
+      try {
+        await updateDoc(docRef, {
+          name: document.getElementById("name").value,
+          phone: document.getElementById("phone").value,
+          avatar: document.getElementById("avatar").value,
+          balance: Number(document.getElementById("balance").value),
+          role: document.getElementById("role").value,
+          tier: Number(document.getElementById("tier").value),
+          weekBoundary: Number(document.getElementById("weekBoundary").value),
+          weeklyDiamonds: Number(document.getElementById("weeklyDiamonds").value),
+          weeklyTotal: Number(document.getElementById("weeklyTotal").value),
+          approved: document.getElementById("approved").checked,
+          refundedOrders: document.getElementById("refundedOrders").value
+            .split(",")
+            .map(x => x.trim())
+            .filter(x => x.length > 0),
+        });
+        status.textContent = "✅ Profile updated successfully!";
+        status.style.color = "lightgreen";
+      } catch (err) {
+        console.error(err);
+        status.textContent = "❌ Error updating profile!";
+        status.style.color = "red";
+      }
+    });
+  </script>
+</body>
+</html>
