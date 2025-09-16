@@ -1,4 +1,4 @@
-<!-- header.html -->
+<!-- Header + Sidebar -->
 <header>
   <button class="menu-toggle">☰</button>
   <div class="site-title">SARKAR TELECOM</div>
@@ -11,7 +11,6 @@
   </div>
 </header>
 
-<!-- Sidebar -->
 <div class="sidebar" id="sidebar">
   <a href="dashboard.html">📊 Dashboard</a>
   <a href="profile.html">👤 Profile</a>
@@ -20,141 +19,135 @@
 </div>
 
 <style>
-  /* Header */
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #1b2735;
-    padding: 5px 15px; /* ডান-বাম সমান padding */
-    position: fixed;
-    top: 0;
-    width: 100%;
-    max-width: 100%;
-    z-index: 1000;
-    box-sizing: border-box;
-  }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1b2735;
+  padding: 10px 15px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+.menu-toggle {
+  font-size: 24px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #fff;
+}
+.site-title {
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  flex: 1;
+  color: yellow; 
+  text-shadow: 0 0 8px orange, 0 0 10px white;
+}
+.profile {
+  position: relative;
+  cursor: pointer;
+  padding-left: 8px; /* avatar padding */
+}
+.profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: block;
+}
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background: #fff;
+  color: #333;
+  min-width: 160px;
+  border-radius: 6px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+.dropdown a {
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+  border-bottom: 1px solid #eee;
+}
+.dropdown a:hover {
+  background: #f0f0f0;
+}
 
-  .menu-toggle { 
-    font-size: 24px; 
-    cursor: pointer; 
-    background: none; 
-    border: none; 
-    color: #fff; 
-  }
-
-  .site-title { 
-    font-weight: bold; 
-    font-size: 20px; 
-    flex: 1; 
-    text-align: center; 
-    color: yellow; 
-    text-shadow: 0 0 8px orange, 0 0 10px white;
-    pointer-events: none; /* title click হলে dropdown না খোলে */
-  }
-
-  .profile { 
-    position: relative; 
-    padding: 0 8px 0 0; /* ডান দিকে padding */
-    cursor: pointer; 
-  }
-
-  .profile img { width:40px; height:40px; border-radius:50%; display:block; }
-
-  .dropdown {
-    position: absolute;
-    right:0;
-    top:50px;
-    background:#fff;
-    color:#333;
-    min-width:160px;
-    border-radius:6px;
-    display:none;
-    flex-direction: column;
-    box-shadow:0 4px 6px rgba(0,0,0,0.2);
-  }
-
-  .dropdown a {
-    padding:10px;
-    text-decoration:none;
-    color:#333;
-    border-bottom:1px solid #eee;
-  }
-  .dropdown a:hover { background:#f0f0f0; }
-
-  /* Sidebar */
-  .sidebar {
-    position: fixed;
-    left: -250px;
-    top: 0;
-    width: 250px;
-    height: 100%;
-    background: #1c2431;
-    padding-top: 60px;
-    transition: left 0.3s ease;
-    z-index: 999;
-  }
-  .sidebar.active { left: 0; }
-  .sidebar a {
-    display:block;
-    padding:12px 20px;
-    text-decoration:none;
-    color:#fff;
-    border-bottom:1px solid #2a3445;
-  }
-  .sidebar a:hover { background:#2f3c52; }
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  left: -250px;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background: #1c2431;
+  padding-top: 60px;
+  transition: left 0.3s ease;
+  z-index: 999;
+}
+.sidebar.active {
+  left: 0;
+}
+.sidebar a {
+  display: block;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #fff;
+  border-bottom: 1px solid #2a3445;
+}
+.sidebar a:hover {
+  background: #2f3c52;
+}
 </style>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
-    authDomain: "diamond-recharge-f7f59.firebaseapp.com",
-    projectId: "diamond-recharge-f7f59",
-    storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
-    messagingSenderId: "657717928489",
-    appId: "1:657717928489:web:70431ebc9afb7002d4b238",
-    measurementId: "G-TDK78BQ8SQ"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
+  authDomain: "diamond-recharge-f7f59.firebaseapp.com",
+  projectId: "diamond-recharge-f7f59",
+  storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
+  messagingSenderId: "657717928489",
+  appId: "1:657717928489:web:70431ebc9afb7002d4b238",
+  measurementId: "G-TDK78BQ8SQ"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-  // Sidebar toggle
-  document.querySelector(".menu-toggle").addEventListener("click", () => {
-    document.getElementById("sidebar").classList.toggle("active");
-  });
+// Sidebar toggle
+document.querySelector(".menu-toggle").addEventListener("click", () => {
+  document.getElementById("sidebar").classList.toggle("active");
+});
 
-  // Profile dropdown toggle
-  const profileMenu = document.getElementById("profileMenu");
-  const dropdownMenu = document.getElementById("dropdownMenu");
-  profileMenu.addEventListener("click", () => {
-    dropdownMenu.style.display = dropdownMenu.style.display === "flex" ? "none" : "flex";
-  });
+// Profile dropdown
+const profileMenu = document.getElementById("profileMenu");
+const dropdownMenu = document.getElementById("dropdownMenu");
+profileMenu.addEventListener("click", () => {
+  dropdownMenu.style.display = dropdownMenu.style.display === "flex" ? "none" : "flex";
+});
 
-  // Load user info
-  onAuthStateChanged(auth, async (user) => {
-    if(user){
-      document.getElementById("profilePic").src = user.photoURL || "https://via.placeholder.com/40";
+// Load user info
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    document.getElementById("profilePic").src = user.photoURL || "https://via.placeholder.com/40";
+  } else {
+    window.location.href = "login.html";
+  }
+});
 
-      // Firestore extra info
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      if(docSnap.exists()){
-        const data = docSnap.data();
-        if(data.avatar) document.getElementById("profilePic").src = data.avatar;
-      }
-    } else {
-      window.location.href = "login.html";
-    }
-  });
-
-  // Logout
-  document.getElementById("logoutBtn").addEventListener("click", () => {
-    signOut(auth).then(()=>{ window.location.href="login.html"; });
-  });
+// Logout
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  signOut(auth).then(()=>{ window.location.href="login.html"; });
+});
 </script>
