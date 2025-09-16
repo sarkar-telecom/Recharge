@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sarkar Telecom - Profile</title>
+  <title>Profile - Sarkar Telecom</title>
   <style>
     body {
       margin: 0;
@@ -101,65 +101,65 @@
     main {
       margin-top: 80px;
       padding: 20px;
+      max-width: 100%;
     }
-    .user-card {
+    .profile-card {
       background: #1c2431;
       padding: 20px;
       border-radius: 12px;
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
       box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
-    .user-card img {
+    .profile-card img {
       width: 100px;
       height: 100px;
       border-radius: 50%;
-      margin: 10px auto;
-      display: block;
-      object-fit: cover;
+      margin-bottom: 10px;
     }
+    .profile-card h2 {
+      margin: 10px 0;
+      font-size: 20px;
+    }
+
     .form-group {
-      margin: 15px 0;
+      margin-bottom: 15px;
+      text-align: left;
     }
     label {
       display: block;
       margin-bottom: 5px;
-      font-weight: bold;
-      color: #ddd;
+      font-size: 14px;
     }
     input {
       width: 100%;
-      padding: 10px;
-      border: none;
+      padding: 8px;
       border-radius: 6px;
-      background: #2a3445;
-      color: #fff;
+      border: none;
+      font-size: 14px;
+      box-sizing: border-box;
     }
     input[readonly] {
-      background: #1b2735;
-      color: #aaa;
+      background: #2a3445;
+      color: #ccc;
     }
-    .save-btn {
-      width: 100%;
-      padding: 12px;
-      background: #0d6efd;
+    button {
+      background: #007bff;
       border: none;
-      border-radius: 8px;
-      font-size: 16px;
       color: #fff;
+      padding: 10px 16px;
+      border-radius: 6px;
       cursor: pointer;
-      margin-top: 10px;
+      font-size: 14px;
     }
-    .save-btn:hover {
-      background: #0b5ed7;
+    button:hover {
+      background: #0056b3;
     }
-    .debug-section {
-      margin-top: 20px;
-      background: #111a25;
-      padding: 15px;
-      border-radius: 8px;
-      font-size: 13px;
-      color: #aaa;
+
+    @media (max-width: 600px) {
+      .profile-card {
+        padding: 15px;
+      }
     }
   </style>
 </head>
@@ -188,56 +188,49 @@
 
   <!-- Main -->
   <main>
-    <div class="user-card">
-      <img id="userAvatar" src="https://via.placeholder.com/100" alt="User Avatar">
-      <input type="file" id="avatarInput" accept="image/*">
-
-      <div class="form-group">
-        <label>Name (Read only)</label>
-        <input type="text" id="name" readonly>
+    <div class="profile-card">
+      <div style="text-align:center;">
+        <img id="avatarPreview" src="https://via.placeholder.com/100" alt="Avatar">
+        <h2 id="name">Loading...</h2>
       </div>
-
+      
+      <!-- Editable Fields -->
       <div class="form-group">
-        <label>Email</label>
+        <label for="email">Email</label>
         <input type="email" id="email">
       </div>
-
       <div class="form-group">
-        <label>Phone</label>
+        <label for="phone">Phone</label>
         <input type="text" id="phone">
       </div>
-
       <div class="form-group">
-        <label>Role (Read only)</label>
+        <label for="avatar">Avatar URL</label>
+        <input type="text" id="avatar">
+      </div>
+      <button id="saveBtn">Save Changes</button>
+
+      <hr style="margin:20px 0; border:1px solid #2a3445;">
+
+      <!-- Read-only Fields -->
+      <div class="form-group">
+        <label>Role</label>
         <input type="text" id="role" readonly>
       </div>
-
       <div class="form-group">
-        <label>Balance (Read only)</label>
+        <label>Balance</label>
         <input type="text" id="balance" readonly>
       </div>
-
       <div class="form-group">
-        <label>Tier (Read only)</label>
+        <label>Tier</label>
         <input type="text" id="tier" readonly>
       </div>
-
       <div class="form-group">
-        <label>Weekly Total (Read only)</label>
+        <label>Weekly Total</label>
         <input type="text" id="weeklyTotal" readonly>
       </div>
-
       <div class="form-group">
-        <label>Weekly Diamonds (Read only)</label>
+        <label>Weekly Diamonds</label>
         <input type="text" id="weeklyDiamonds" readonly>
-      </div>
-
-      <button class="save-btn" id="saveBtn">Save Changes</button>
-
-      <div class="debug-section">
-        <p><b>Approved:</b> <span id="approved">-</span></p>
-        <p><b>Refunded Orders:</b> <span id="refundedOrders">-</span></p>
-        <p><b>Week Boundary:</b> <span id="weekBoundary">-</span></p>
       </div>
     </div>
   </main>
@@ -245,15 +238,16 @@
   <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut, updateEmail } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { 
+      getAuth, onAuthStateChanged, signOut, updateEmail, updateProfile 
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
       authDomain: "diamond-recharge-f7f59.firebaseapp.com",
       projectId: "diamond-recharge-f7f59",
-      storageBucket: "diamond-recharge-f7f59.appspot.com",
+      storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
       messagingSenderId: "657717928489",
       appId: "1:657717928489:web:70431ebc9afb7002d4b238",
       measurementId: "G-TDK78BQ8SQ"
@@ -262,7 +256,6 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const storage = getStorage(app);
 
     // Sidebar toggle
     document.querySelector(".menu-toggle").addEventListener("click", () => {
@@ -276,62 +269,66 @@
       dropdownMenu.style.display = dropdownMenu.style.display === "flex" ? "none" : "flex";
     });
 
-    // Auth state
+    // Load profile
+    let currentUserId = null;
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        currentUserId = user.uid;
+        document.getElementById("profilePic").src = user.photoURL || "https://via.placeholder.com/40";
+
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
-
         if (docSnap.exists()) {
           const data = docSnap.data();
 
-          document.getElementById("name").value = data.name || "";
+          document.getElementById("name").textContent = data.name || "No Name";
           document.getElementById("email").value = data.email || user.email || "";
           document.getElementById("phone").value = data.phone || "";
+          document.getElementById("avatar").value = data.avatar || user.photoURL || "";
+          document.getElementById("avatarPreview").src = data.avatar || user.photoURL || "https://via.placeholder.com/100";
+
           document.getElementById("role").value = data.role || "";
           document.getElementById("balance").value = data.balance ?? 0;
           document.getElementById("tier").value = data.tier ?? 0;
           document.getElementById("weeklyTotal").value = data.weeklyTotal ?? 0;
           document.getElementById("weeklyDiamonds").value = data.weeklyDiamonds ?? 0;
-
-          document.getElementById("userAvatar").src = data.avatar || "https://via.placeholder.com/100";
-          document.getElementById("profilePic").src = data.avatar || "https://via.placeholder.com/40";
-
-          // Debug section
-          document.getElementById("approved").textContent = data.approved;
-          document.getElementById("weekBoundary").textContent = data.weekBoundary ?? "-";
         }
-
-        // Avatar upload
-        document.getElementById("avatarInput").addEventListener("change", async (e) => {
-          const file = e.target.files[0];
-          if (!file) return;
-          const storageRef = ref(storage, "avatars/" + user.uid);
-          await uploadBytes(storageRef, file);
-          const url = await getDownloadURL(storageRef);
-          document.getElementById("userAvatar").src = url;
-          document.getElementById("profilePic").src = url;
-          await updateDoc(docRef, { avatar: url });
-        });
-
-        // Save email + phone
-        document.getElementById("saveBtn").addEventListener("click", async () => {
-          const newEmail = document.getElementById("email").value;
-          const newPhone = document.getElementById("phone").value;
-
-          try {
-            if (newEmail !== user.email) {
-              await updateEmail(user, newEmail);
-            }
-            await updateDoc(docRef, { email: newEmail, phone: newPhone });
-            alert("✅ Profile updated successfully!");
-          } catch (err) {
-            alert("❌ Error: " + err.message);
-          }
-        });
-
       } else {
         window.location.href = "login.html";
+      }
+    });
+
+    // Save changes
+    document.getElementById("saveBtn").addEventListener("click", async () => {
+      if (!currentUserId) return;
+
+      const newEmail = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const avatar = document.getElementById("avatar").value;
+
+      try {
+        // Firebase Auth update
+        if (auth.currentUser) {
+          if (newEmail && newEmail !== auth.currentUser.email) {
+            await updateEmail(auth.currentUser, newEmail);
+          }
+          if (avatar && avatar !== auth.currentUser.photoURL) {
+            await updateProfile(auth.currentUser, { photoURL: avatar });
+          }
+        }
+
+        // Firestore update
+        await updateDoc(doc(db, "users", currentUserId), {
+          email: newEmail,
+          phone,
+          avatar
+        });
+
+        alert("Profile updated successfully!");
+        document.getElementById("avatarPreview").src = avatar || "https://via.placeholder.com/100";
+        document.getElementById("profilePic").src = avatar || "https://via.placeholder.com/40";
+      } catch (err) {
+        alert("Error updating profile: " + err.message);
       }
     });
 
