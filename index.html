@@ -3,26 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💎 Dashboard - Diamond Recharge</title>
+<title>Dashboard - Diamond Recharge</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <header>
-  <div class="header-title">Diamond Recharge</div>
-  <img src="https://via.placeholder.com/40" class="avatar" id="userAvatar">
-  <div class="dropdown" id="dropdown">
-    <a href="profile.html">Profile</a>
-    <a href="#" id="logoutBtn">Logout</a>
+  <div class="menu-toggle" id="menuToggle">☰</div>
+  <div class="site-title">Diamond Recharge</div>
+  <div class="dropdown">
+    <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar" id="avatarBtn">
+    <div class="dropdown-content" id="dropdownMenu">
+      <a href="profile.html" id="profileLink">Profile</a>
+      <a href="#" id="authLink">Logout</a>
+    </div>
   </div>
 </header>
+
+<div class="overlay" id="overlay"></div>
+
 <div class="sidebar" id="sidebar">
-  <a href="index.html">Home</a>
-  <a href="profile.html">Profile</a>
+  <a href="#"><i class="fas fa-home"></i>Home</a>
+  <a href="#"><i class="fas fa-gem"></i>Recharge</a>
+  <a href="#"><i class="fas fa-list"></i>Orders</a>
+  <a href="#"><i class="fas fa-headset"></i>Support</a>
 </div>
-<main>
-  <h2>Welcome to Dashboard</h2>
-  <p>This is your main dashboard content.</p>
-</main>
-<script type="module" src="index.js"></script>
+
+<div class="container">
+  <h2>💎 Dashboard</h2>
+  <p>Welcome to your Diamond Recharge Dashboard!</p>
+  <p>Here you can view your recharge options, orders, and profile.</p>
+</div>
+
+<script type="module" src="main.js"></script>
+<script>
+pageDashboard(); // Initialize dashboard functionality
+</script>
 </body>
 </html>
