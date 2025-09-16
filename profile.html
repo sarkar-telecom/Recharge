@@ -1,196 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sarkar Telecom - Profile</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <title>Sarkar Telecom Profile</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-
     body {
       margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: #0a0f1c;
+      font-family: Arial, sans-serif;
+      background: #0f1824;
       color: #fff;
+    }
+
+    /* Header */
+    header {
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1b2735;
+      padding: 10px 15px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-sizing: border-box;
+    }
+    .menu-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #fff;
+    }
+    .site-title {
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      flex: 1;
+    }
+    .profile {
+      position: relative;
+      cursor: pointer;
+      padding-left: 8px;
+    }
+    .profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: block;
+    }
+    .dropdown {
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: #fff;
+      color: #333;
+      min-width: 160px;
+      border-radius: 6px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    .dropdown a {
+      padding: 10px;
+      text-decoration: none;
+      color: #333;
+      border-bottom: 1px solid #eee;
+    }
+    .dropdown a:hover {
+      background: #f0f0f0;
     }
 
     /* Sidebar */
     .sidebar {
-      width: 220px;
-      background: rgba(15, 20, 40, 0.9);
-      backdrop-filter: blur(10px);
-      min-height: 100vh;
-      padding: 20px 10px;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.6);
       position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #1c2431;
+      padding-top: 60px;
+      transition: left 0.3s ease;
+      z-index: 999;
     }
-
-    .sidebar h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 20px;
-      color: #00d9ff;
+    .sidebar.active {
+      left: 0;
     }
-
     .sidebar a {
       display: block;
-      color: #fff;
+      padding: 12px 20px;
       text-decoration: none;
-      margin: 12px 0;
-      padding: 10px;
-      border-radius: 8px;
-      transition: 0.3s;
+      color: #fff;
+      border-bottom: 1px solid #2a3445;
     }
     .sidebar a:hover {
-      background: rgba(0,217,255,0.15);
-      color: #00d9ff;
+      background: #2f3c52;
     }
 
-    /* Content */
-    .content {
-      margin-left: 240px;
+    /* Main */
+    main {
+      margin-top: 80px;
       padding: 20px;
-      flex: 1;
+      text-align: center;
     }
-
-    .card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 15px;
-      padding: 30px;
-      max-width: 600px;
+    .user-card {
+      background: #1c2431;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 450px;
       margin: auto;
-      box-shadow: 0 0 20px rgba(0,217,255,0.2);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      text-align: left;
     }
-
-    .card h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #00d9ff;
-    }
-
-    /* Avatar */
-    .avatar-container {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .avatar-container img {
-      width: 120px;
-      height: 120px;
+    .user-card img {
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #00d9ff;
-      box-shadow: 0 0 15px rgba(0,217,255,0.6);
-    }
-
-    /* Form */
-    form label {
       display: block;
-      margin: 10px 0 5px;
-      font-size: 14px;
-      color: #00d9ff;
+      margin: 0 auto 15px auto;
     }
-    form input {
+    .user-card h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 12px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+      color: #bbb;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    .readonly {
+      background: #2a3445;
+      color: #ccc;
+    }
+    button {
       width: 100%;
       padding: 10px;
-      border-radius: 8px;
       border: none;
-      outline: none;
-      margin-bottom: 15px;
-      font-size: 14px;
-      background: rgba(255,255,255,0.08);
-      color: #fff;
-    }
-    form input.readonly {
-      background: rgba(255,255,255,0.05);
-      color: #ccc;
-      cursor: not-allowed;
-    }
-    form button {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(90deg, #00d9ff, #0066ff);
-      color: #fff;
-      transition: 0.3s;
+      border-radius: 6px;
       margin-top: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #2f80ed;
+      color: #fff;
     }
-    form button:hover {
-      box-shadow: 0 0 20px rgba(0,217,255,0.6);
-      transform: scale(1.02);
+    button:hover {
+      background: #1f5bb5;
     }
   </style>
 </head>
 <body>
+  <!-- Header -->
+  <header>
+    <button class="menu-toggle">☰</button>
+    <div class="site-title">SARKAR TELECOM</div>
+    <div class="profile" id="profileMenu">
+      <img id="profilePic" src="https://via.placeholder.com/40" alt="Profile">
+      <div class="dropdown" id="dropdownMenu">
+        <a href="profile.html">Profile</a>
+        <a href="logout.html" id="logoutBtn">Logout</a>
+      </div>
+    </div>
+  </header>
 
   <!-- Sidebar -->
-  <div class="sidebar">
-    <h2>SARKAR TELECOM</h2>
+  <div class="sidebar" id="sidebar">
     <a href="dashboard.html">📊 Dashboard</a>
     <a href="profile.html">👤 Profile</a>
-    <a href="#">📋 User Request</a>
-    <a href="#">📜 History</a>
-    <a href="#">🚪 Logout</a>
+    <a href="user-managment.html">📋 User Request</a>
+    <a href="order-history.html">📜 History</a>
+    <a href="logout.html" id="logoutBtn2">🚪 Logout</a>
   </div>
 
-  <!-- Content -->
-  <div class="content">
-    <div class="card">
+  <!-- Main -->
+  <main>
+    <div class="user-card">
+      <img id="userPhoto" src="https://via.placeholder.com/80" alt="User Photo">
       <h2>My Profile</h2>
-
-      <div class="avatar-container">
-        <img id="avatarPreview" src="https://via.placeholder.com/120" alt="User Avatar">
-      </div>
-
       <form id="profileForm">
-        <!-- Readonly -->
-        <label>Email</label>
-        <input type="email" id="email" class="readonly" readonly>
+        <!-- Readonly fields -->
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" class="readonly" readonly>
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <input type="text" id="role" class="readonly" readonly>
+        </div>
+        <div class="form-group">
+          <label>Balance</label>
+          <input type="number" id="balance" class="readonly" readonly>
+        </div>
+        <div class="form-group">
+          <label>Approved</label>
+          <input type="text" id="approved" class="readonly" readonly>
+        </div>
+        <div class="form-group">
+          <label>Tier</label>
+          <input type="number" id="tier" class="readonly" readonly>
+        </div>
+        <div class="form-group">
+          <label>Weekly Diamonds</label>
+          <input type="number" id="weeklyDiamonds" class="readonly" readonly>
+        </div>
+        <div class="form-group">
+          <label>Weekly Total</label>
+          <input type="number" id="weeklyTotal" class="readonly" readonly>
+        </div>
 
-        <label>Role</label>
-        <input type="text" id="role" class="readonly" readonly>
-
-        <label>Balance</label>
-        <input type="number" id="balance" class="readonly" readonly>
-
-        <label>Approved</label>
-        <input type="text" id="approved" class="readonly" readonly>
-
-        <label>Tier</label>
-        <input type="number" id="tier" class="readonly" readonly>
-
-        <label>Weekly Diamonds</label>
-        <input type="number" id="weeklyDiamonds" class="readonly" readonly>
-
-        <label>Weekly Total</label>
-        <input type="number" id="weeklyTotal" class="readonly" readonly>
-
-        <!-- Editable -->
-        <label>Avatar URL</label>
-        <input type="text" id="avatar" placeholder="Enter image URL">
-
-        <label>Name</label>
-        <input type="text" id="name" placeholder="Enter your name">
-
-        <label>Phone</label>
-        <input type="text" id="phone" placeholder="Enter your phone number">
-
+        <!-- Editable fields -->
+        <div class="form-group">
+          <label>Avatar URL</label>
+          <input type="text" id="avatar">
+        </div>
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="name">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" id="phone">
+        </div>
         <button type="submit">Update Profile</button>
       </form>
     </div>
-  </div>
+  </main>
 
-  <script>
-    // Avatar preview update
-    document.getElementById('avatar').addEventListener('input', function() {
-      const url = this.value.trim();
-      const preview = document.getElementById('avatarPreview');
-      if(url) preview.src = url;
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
+      authDomain: "diamond-recharge-f7f59.firebaseapp.com",
+      projectId: "diamond-recharge-f7f59",
+      storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
+      messagingSenderId: "657717928489",
+      appId: "1:657717928489:web:70431ebc9afb7002d4b238",
+      measurementId: "G-TDK78BQ8SQ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Sidebar toggle
+    document.querySelector(".menu-toggle").addEventListener("click", () => {
+      document.getElementById("sidebar").classList.toggle("active");
     });
+
+    // Profile dropdown
+    const profileMenu = document.getElementById("profileMenu");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    profileMenu.addEventListener("click", () => {
+      dropdownMenu.style.display = dropdownMenu.style.display === "flex" ? "none" : "flex";
+    });
+
+    // Load user info
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        document.getElementById("email").value = user.email;
+        document.getElementById("userPhoto").src = user.photoURL || "https://via.placeholder.com/80";
+        document.getElementById("profilePic").src = user.photoURL || "https://via.placeholder.com/40";
+
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.role) document.getElementById("role").value = data.role;
+          if (data.balance) document.getElementById("balance").value = data.balance;
+          if (data.approved) document.getElementById("approved").value = data.approved;
+          if (data.tier) document.getElementById("tier").value = data.tier;
+          if (data.weeklyDiamonds) document.getElementById("weeklyDiamonds").value = data.weeklyDiamonds;
+          if (data.weeklyTotal) document.getElementById("weeklyTotal").value = data.weeklyTotal;
+          if (data.name) document.getElementById("name").value = data.name;
+          if (data.phone) document.getElementById("phone").value = data.phone;
+          if (data.avatar) {
+            document.getElementById("avatar").value = data.avatar;
+            document.getElementById("userPhoto").src = data.avatar;
+            document.getElementById("profilePic").src = data.avatar;
+          }
+        }
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    // Update profile
+    document.getElementById("profileForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const user = auth.currentUser;
+      if (!user) return;
+      const docRef = doc(db, "users", user.uid);
+      await updateDoc(docRef, {
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        avatar: document.getElementById("avatar").value
+      });
+      alert("Profile updated!");
+    });
+
+    // Logout
+    function doLogout() {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      });
+    }
+    document.getElementById("logoutBtn").addEventListener("click", doLogout);
+    document.getElementById("logoutBtn2").addEventListener("click", doLogout);
   </script>
 </body>
 </html>
