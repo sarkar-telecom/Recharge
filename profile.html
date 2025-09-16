@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Profile - Sarkar Telecom</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -22,7 +22,7 @@
   </div>
 </header>
 
-<!-- Overlay for sidebar -->
+<!-- Overlay -->
 <div class="overlay" id="overlay"></div>
 
 <!-- Sidebar -->
@@ -33,27 +33,37 @@
   <a href="support.html"><i class="fas fa-headset"></i>Support</a>
 </div>
 
-<!-- Profile Container -->
+<!-- Profile Section -->
 <div class="container">
   <h2>👤 My Profile</h2>
-  
+
   <div class="profile-card">
-    <img src="https://via.placeholder.com/100" alt="Profile Avatar" id="profileAvatar" class="avatar-large">
-    
+    <img src="https://via.placeholder.com/100" alt="Profile Avatar" id="profileAvatar" 
+         style="width:100px;height:100px;border-radius:50%;border:3px solid #0ff;
+         box-shadow:0 0 15px #0ff;margin-bottom:20px;object-fit:cover;"/>
+
     <form id="profileForm">
-      <label>Name:</label>
-      <input type="text" id="userName" required />
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" id="userName" placeholder="Full Name" required />
+      </div>
 
-      <label>Email:</label>
-      <input type="email" id="userEmail" disabled />
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="userEmail" placeholder="Email" disabled />
+      </div>
 
-      <label>Phone:</label>
-      <input type="text" id="userPhone" />
+      <div class="input-group">
+        <i class="fas fa-phone"></i>
+        <input type="text" id="userPhone" placeholder="Phone Number" />
+      </div>
 
-      <label>Balance:</label>
-      <input type="number" id="userBalance" disabled />
+      <div class="input-group">
+        <i class="fas fa-wallet"></i>
+        <input type="number" id="userBalance" placeholder="Balance" disabled />
+      </div>
 
-      <button type="submit">💾 Save Changes</button>
+      <button type="submit" class="nav-btn">💾 Save Changes</button>
     </form>
   </div>
 </div>
@@ -71,7 +81,7 @@ const userPhone = document.getElementById("userPhone");
 const userBalance = document.getElementById("userBalance");
 const profileForm = document.getElementById("profileForm");
 
-// Auth check
+// Load user info
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     const ref = doc(db, "users", user.uid);
@@ -89,7 +99,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// Update Firestore on Save
+// Save updates
 profileForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const user = auth.currentUser;
