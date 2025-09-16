@@ -101,16 +101,14 @@
     main {
       margin-top: 80px;
       padding: 20px;
-      text-align: center;
     }
     .user-card {
       background: #1c2431;
       padding: 20px;
       border-radius: 12px;
-      max-width: 420px;
+      max-width: 500px;
       margin: auto;
       box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-      text-align: left;
     }
     .user-card img {
       width: 100px;
@@ -118,39 +116,50 @@
       border-radius: 50%;
       margin: 10px auto;
       display: block;
+      object-fit: cover;
     }
     .form-group {
-      margin-bottom: 15px;
+      margin: 15px 0;
     }
     label {
       display: block;
-      font-size: 14px;
       margin-bottom: 5px;
-      color: #ccc;
+      font-weight: bold;
+      color: #ddd;
     }
     input {
       width: 100%;
       padding: 10px;
       border: none;
       border-radius: 6px;
-      font-size: 14px;
+      background: #2a3445;
+      color: #fff;
     }
     input[readonly] {
-      background: #2a3445;
+      background: #1b2735;
       color: #aaa;
     }
     .save-btn {
       width: 100%;
       padding: 12px;
+      background: #0d6efd;
       border: none;
       border-radius: 8px;
-      background: #0d6efd;
-      color: #fff;
       font-size: 16px;
+      color: #fff;
       cursor: pointer;
+      margin-top: 10px;
     }
     .save-btn:hover {
       background: #0b5ed7;
+    }
+    .debug-section {
+      margin-top: 20px;
+      background: #111a25;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #aaa;
     }
   </style>
 </head>
@@ -187,31 +196,56 @@
         <label>Name (Read only)</label>
         <input type="text" id="name" readonly>
       </div>
+
       <div class="form-group">
         <label>Email</label>
         <input type="email" id="email">
       </div>
+
       <div class="form-group">
         <label>Phone</label>
         <input type="text" id="phone">
       </div>
+
       <div class="form-group">
         <label>Role (Read only)</label>
         <input type="text" id="role" readonly>
       </div>
+
       <div class="form-group">
         <label>Balance (Read only)</label>
         <input type="text" id="balance" readonly>
       </div>
 
+      <div class="form-group">
+        <label>Tier (Read only)</label>
+        <input type="text" id="tier" readonly>
+      </div>
+
+      <div class="form-group">
+        <label>Weekly Total (Read only)</label>
+        <input type="text" id="weeklyTotal" readonly>
+      </div>
+
+      <div class="form-group">
+        <label>Weekly Diamonds (Read only)</label>
+        <input type="text" id="weeklyDiamonds" readonly>
+      </div>
+
       <button class="save-btn" id="saveBtn">Save Changes</button>
+
+      <div class="debug-section">
+        <p><b>Approved:</b> <span id="approved">-</span></p>
+        <p><b>Refunded Orders:</b> <span id="refundedOrders">-</span></p>
+        <p><b>Week Boundary:</b> <span id="weekBoundary">-</span></p>
+      </div>
     </div>
   </main>
 
   <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, updateEmail, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut, updateEmail } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
@@ -242,7 +276,7 @@
       dropdownMenu.style.display = dropdownMenu.style.display === "flex" ? "none" : "flex";
     });
 
-    // Load user info
+    // Auth state
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const docRef = doc(db, "users", user.uid);
@@ -250,16 +284,26 @@
 
         if (docSnap.exists()) {
           const data = docSnap.data();
-          document.getElementById("name").value = data.name || user.displayName || "";
+
+          document.getElementById("name").value = data.name || "";
           document.getElementById("email").value = data.email || user.email || "";
           document.getElementById("phone").value = data.phone || "";
-          document.getElementById("role").value = data.role || "User";
-          document.getElementById("balance").value = data.balance || "0";
-          document.getElementById("userAvatar").src = data.avatar || user.photoURL || "https://via.placeholder.com/100";
-          document.getElementById("profilePic").src = data.avatar || user.photoURL || "https://via.placeholder.com/40";
+          document.getElementById("role").value = data.role || "";
+          document.getElementById("balance").value = data.balance ?? 0;
+          document.getElementById("tier").value = data.tier ?? 0;
+          document.getElementById("weeklyTotal").value = data.weeklyTotal ?? 0;
+          document.getElementById("weeklyDiamonds").value = data.weeklyDiamonds ?? 0;
+
+          document.getElementById("userAvatar").src = data.avatar || "https://via.placeholder.com/100";
+          document.getElementById("profilePic").src = data.avatar || "https://via.placeholder.com/40";
+
+          // Debug section
+          document.getElementById("approved").textContent = data.approved;
+          document.getElementById("refundedOrders").textContent = JSON.stringify(data.refundedOrders || []);
+          document.getElementById("weekBoundary").textContent = data.weekBoundary ?? "-";
         }
 
-        // Avatar Upload
+        // Avatar upload
         document.getElementById("avatarInput").addEventListener("change", async (e) => {
           const file = e.target.files[0];
           if (!file) return;
@@ -271,18 +315,16 @@
           await updateDoc(docRef, { avatar: url });
         });
 
-        // Save Email + Phone
+        // Save email + phone
         document.getElementById("saveBtn").addEventListener("click", async () => {
           const newEmail = document.getElementById("email").value;
           const newPhone = document.getElementById("phone").value;
+
           try {
             if (newEmail !== user.email) {
               await updateEmail(user, newEmail);
             }
-            await updateDoc(docRef, {
-              email: newEmail,
-              phone: newPhone
-            });
+            await updateDoc(docRef, { email: newEmail, phone: newPhone });
             alert("✅ Profile updated successfully!");
           } catch (err) {
             alert("❌ Error: " + err.message);
