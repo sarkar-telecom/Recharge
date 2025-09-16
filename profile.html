@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profile - Diamond Recharge</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile - Sarkar Telecom</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- Header -->
 <header>
   <div class="menu-toggle" id="menuToggle">☰</div>
-  <div class="site-title">Diamond Recharge</div>
+  <div class="site-title">SARKAR TELECOM</div>
   <div class="dropdown">
     <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar" id="avatarBtn">
     <div class="dropdown-content" id="dropdownMenu">
@@ -21,25 +22,89 @@
   </div>
 </header>
 
+<!-- Overlay for sidebar -->
 <div class="overlay" id="overlay"></div>
 
+<!-- Sidebar -->
 <div class="sidebar" id="sidebar">
-  <a href="#"><i class="fas fa-home"></i>Home</a>
-  <a href="#"><i class="fas fa-gem"></i>Recharge</a>
-  <a href="#"><i class="fas fa-list"></i>Orders</a>
-  <a href="#"><i class="fas fa-headset"></i>Support</a>
+  <a href="dashboard.html"><i class="fas fa-home"></i>Dashboard</a>
+  <a href="order.html"><i class="fas fa-gem"></i>Recharge</a>
+  <a href="order-history.html"><i class="fas fa-list"></i>Orders</a>
+  <a href="support.html"><i class="fas fa-headset"></i>Support</a>
 </div>
 
+<!-- Profile Container -->
 <div class="container">
-  <h2>👤 Profile</h2>
-  <img src="https://via.placeholder.com/80" alt="Profile Avatar" id="profileAvatar" class="avatar">
-  <p>Email: <span id="userEmail">user@example.com</span></p>
-  <button class="nav-btn" id="logoutBtn">Logout</button>
+  <h2>👤 My Profile</h2>
+  
+  <div class="profile-card">
+    <img src="https://via.placeholder.com/100" alt="Profile Avatar" id="profileAvatar" class="avatar-large">
+    
+    <form id="profileForm">
+      <label>Name:</label>
+      <input type="text" id="userName" required />
+
+      <label>Email:</label>
+      <input type="email" id="userEmail" disabled />
+
+      <label>Phone:</label>
+      <input type="text" id="userPhone" />
+
+      <label>Balance:</label>
+      <input type="number" id="userBalance" disabled />
+
+      <button type="submit">💾 Save Changes</button>
+    </form>
+  </div>
 </div>
 
 <script type="module" src="main.js"></script>
-<script>
-pageProfile(); // Initialize profile functionality
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+const profileAvatar = document.getElementById("profileAvatar");
+const userName = document.getElementById("userName");
+const userEmail = document.getElementById("userEmail");
+const userPhone = document.getElementById("userPhone");
+const userBalance = document.getElementById("userBalance");
+const profileForm = document.getElementById("profileForm");
+
+// Auth check
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const ref = doc(db, "users", user.uid);
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      const data = snap.data();
+      profileAvatar.src = data.avatar || "https://via.placeholder.com/100";
+      userName.value = data.name || "";
+      userEmail.value = data.email || user.email;
+      userPhone.value = data.phone || "";
+      userBalance.value = data.balance ?? 0;
+    }
+  } else {
+    window.location.href = "login.html";
+  }
+});
+
+// Update Firestore on Save
+profileForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const ref = doc(db, "users", user.uid);
+  await updateDoc(ref, {
+    name: userName.value,
+    phone: userPhone.value,
+    avatar: profileAvatar.src
+  });
+
+  alert("✅ Profile updated successfully!");
+});
 </script>
+
 </body>
 </html>
