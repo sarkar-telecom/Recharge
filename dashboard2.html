@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #fff;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    main {
+      padding: 20px;
+    }
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>🚀 Dashboard</h2>
+    <div class="user-info">
+      <span id="userName">Loading...</span>
+      <img id="userAvatar" src="https://via.placeholder.com/40" alt="avatar"/>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <p><b>Email:</b> <span id="userEmail"></span></p>
+      <p><b>Balance:</b> <span id="userBalance"></span></p>
+      <p><b>Role:</b> <span id="userRole"></span></p>
+      <p><b>Weekly Diamonds:</b> <span id="userWeeklyDiamonds"></span></p>
+      <p><b>Weekly Total:</b> <span id="userWeeklyTotal"></span></p>
+    </div>
+  </main>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+    // Your config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
+      authDomain: "diamond-recharge-f7f59.firebaseapp.com",
+      projectId: "diamond-recharge-f7f59",
+      storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
+      messagingSenderId: "657717928489",
+      appId: "1:657717928489:web:70431ebc9afb7002d4b238",
+      measurementId: "G-TDK78BQ8SQ"
+    };
+
+    // Init Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Elements
+    const userName = document.getElementById("userName");
+    const userEmail = document.getElementById("userEmail");
+    const userBalance = document.getElementById("userBalance");
+    const userRole = document.getElementById("userRole");
+    const userWeeklyDiamonds = document.getElementById("userWeeklyDiamonds");
+    const userWeeklyTotal = document.getElementById("userWeeklyTotal");
+    const userAvatar = document.getElementById("userAvatar");
+
+    // Auth check
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const uid = user.uid;
+        const userDoc = await getDoc(doc(db, "users", uid));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          userName.textContent = data.name || "No Name";
+          userEmail.textContent = data.email || user.email;
+          userBalance.textContent = data.balance ?? 0;
+          userRole.textContent = data.role || "user";
+          userWeeklyDiamonds.textContent = data.weeklyDiamonds ?? 0;
+          userWeeklyTotal.textContent = data.weeklyTotal ?? 0;
+          userAvatar.src = data.avatar || "https://via.placeholder.com/40";
+        } else {
+          alert("⚠️ User data not found in Firestore!");
+        }
+      } else {
+        // Redirect to login if not logged in
+        window.location.href = "login.html";
+      }
+    });
+  </script>
+</body>
+</html>
