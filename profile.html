@@ -1,267 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sarkar Telecom Profile</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #0f1824;
+      margin: 0;
+      background: #0d0d0d;
       color: #fff;
     }
-
-     /* Header */
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #1b2735;
-      padding: 10px 15px;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 1000;
-      box-sizing: border-box;
-    }
-    .menu-toggle {
-      font-size: 24px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      color: #fff;
-    }
-    .site-title {
-      font-weight: bold;
-      font-size: 18px;
+      background: #111;
+      padding: 15px;
       text-align: center;
-      flex: 1;
-    }
-    .profile {
-      position: relative;
-      cursor: pointer;
-      padding-left: 8px; /* ✅ avatar এর জন্য সামান্য padding */
-    }
-    .profile img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: block;
-    }
-    .dropdown {
-      position: absolute;
-      right: 0;
-      top: 50px;
-      background: #fff;
-      color: #333;
-      min-width: 160px;
-      border-radius: 6px;
-      display: none;
-      flex-direction: column;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    }
-    .dropdown a {
-      padding: 10px;
-      text-decoration: none;
-      color: #333;
-      border-bottom: 1px solid #eee;
-    }
-    .dropdown a:hover {
-      background: #f0f0f0;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      position: fixed;
-      left: -250px;
-      top: 0;
-      width: 250px;
-      height: 100%;
-      background: #1c2431;
-      padding-top: 60px;
-      transition: left 0.3s ease;
-      z-index: 999;
-    }
-    .sidebar.active {
-      left: 0;
-    }
-    .sidebar a {
-      display: block;
-      padding: 12px 20px;
-      text-decoration: none;
-      color: #fff;
-      border-bottom: 1px solid #2a3445;
-    }
-    .sidebar a:hover {
-      background: #2f3c52;
-    }
-
-    /* Main */
-    main {
-      margin-top: 80px;
-      padding: 20px;
-      text-align: center;
-    }
-    .user-card {
-      background: #1c2431;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 400px;
-      margin: auto;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    }
-    .user-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin-bottom: 10px;
-    }
-    .user-card h2 {
-      margin: 10px 0;
       font-size: 20px;
+      font-weight: bold;
+      color: cyan;
+      border-bottom: 2px solid cyan;
     }
-    .user-card p {
-      margin: 5px 0;
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: rgba(20, 20, 20, 0.9);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0px 0px 15px cyan;
+    }
+    .avatar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .avatar img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid cyan;
+      box-shadow: 0px 0px 12px cyan;
+    }
+    form label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    form input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      margin-bottom: 15px;
       font-size: 14px;
+    }
+    .readonly {
+      background: #2b2b2b;
       color: #aaa;
+      cursor: not-allowed;
+    }
+    #profileForm input:not(.readonly) {
+      background: #1a1a1a;
+      color: #fff;
+      border: 1px solid cyan;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: cyan;
+      color: #000;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #00e6e6;
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <button class="menu-toggle">☰</button>
-    <div class="site-title">SARKAR TELECOM</div>
-    <div class="profile" id="profileMenu">
-      <img id="profilePic" src="https://via.placeholder.com/40" alt="Profile">
-      <div class="dropdown" id="dropdownMenu">
-        <a href="dashboard.html">Dashboard</a>
-        <a href="#" id="logoutBtn">Logout</a>
-      </div>
-    </div>
-  </header>
 
-  <!-- Sidebar -->
-  <div class="sidebar" id="sidebar">
-    <a href="dashboard.html">📊 Dashboard</a>
-    <a href="profile.html">👤 Profile</a>
-    <a href="user-managment.html">📋 User Request</a>
-    <a href="order-history.html">📜 History</a>
-    <a href="#" id="logoutBtn2">🚪 Logout</a>
+<header>
+  Sarkar Telecom Profile
+</header>
+
+<div class="container">
+  <div class="avatar">
+    <img id="avatarPreview" src="https://via.placeholder.com/120" alt="User Avatar">
   </div>
+  <form id="profileForm">
+    <!-- Readonly fields -->
+    <label>Email</label>
+    <input type="email" id="email" class="readonly" readonly>
 
-  <!-- Main -->
-  <main>
-    <div class="profile-card">
-      <h2>My Profile</h2>
-      <img id="userPhoto" src="https://via.placeholder.com/100" alt="User Avatar">
+    <label>Role</label>
+    <input type="text" id="role" class="readonly" readonly>
 
-      <form id="profileForm">
-        <!-- Readonly fields -->
-        <label>Email</label>
-        <input type="email" id="email" class="readonly" readonly>
-        <label>Role</label>
-        <input type="text" id="role" class="readonly" readonly>
-        <label>Balance</label>
-        <input type="number" id="balance" class="readonly" readonly>
-        <label>Approved</label>
-        <input type="text" id="approved" class="readonly" readonly>
-        <label>Tier</label>
-        <input type="number" id="tier" class="readonly" readonly>
-        <label>Weekly Diamonds</label>
-        <input type="number" id="weeklyDiamonds" class="readonly" readonly>
-        <label>Weekly Total</label>
-        <input type="number" id="weeklyTotal" class="readonly" readonly>
+    <label>Balance</label>
+    <input type="number" id="balance" class="readonly" readonly>
 
-        <!-- Editable fields -->
-        <label>Avatar URL</label>
-        <input type="text" id="avatar">
-        <label>Name</label>
-        <input type="text" id="name">
-        <label>Phone</label>
-        <input type="text" id="phone">
+    <label>Approved</label>
+    <input type="text" id="approved" class="readonly" readonly>
 
-        <button type="submit">Update Profile</button>
-      </form>
-    </div>
-  </main>
+    <label>Tier</label>
+    <input type="number" id="tier" class="readonly" readonly>
 
-  <!-- Firebase + JS -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    <label>Weekly Diamonds</label>
+    <input type="number" id="weeklyDiamonds" class="readonly" readonly>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
-      authDomain: "diamond-recharge-f7f59.firebaseapp.com",
-      projectId: "diamond-recharge-f7f59",
-      storageBucket: "diamond-recharge-f7f59.firebasestorage.app",
-      messagingSenderId: "657717928489",
-      appId: "1:657717928489:web:70431ebc9afb7002d4b238",
-      measurementId: "G-TDK78BQ8SQ"
-    };
+    <label>Weekly Total</label>
+    <input type="number" id="weeklyTotal" class="readonly" readonly>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    <!-- Editable fields -->
+    <label>Avatar URL</label>
+    <input type="text" id="avatar">
 
-    // Sidebar toggle
-    const menuBtn = document.querySelector(".menu-toggle");
-    const sidebar = document.getElementById("sidebar");
-    menuBtn.addEventListener("click", () => sidebar.classList.toggle("active"));
+    <label>Name</label>
+    <input type="text" id="name">
 
-    // Profile dropdown
-    const profileMenu = document.getElementById("profileMenu");
-    const dropdownMenu = document.getElementById("dropdownMenu");
-    profileMenu.addEventListener("click", () => {
-      dropdownMenu.style.display = dropdownMenu.style.display === "flex" ? "none" : "flex";
-    });
+    <label>Phone</label>
+    <input type="text" id="phone">
 
-    // Load user info
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) return window.location.href = "login.html";
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        document.getElementById("userPhoto").src = data.avatar || "https://via.placeholder.com/100";
-        document.getElementById("profilePic").src = data.avatar || "https://via.placeholder.com/40";
-        document.getElementById("email").value = data.email || user.email;
-        document.getElementById("role").value = data.role || "";
-        document.getElementById("balance").value = data.balance || 0;
-        document.getElementById("approved").value = data.approved ? "Yes" : "No";
-        document.getElementById("tier").value = data.tier || 0;
-        document.getElementById("weeklyDiamonds").value = data.weeklyDiamonds || 0;
-        document.getElementById("weeklyTotal").value = data.weeklyTotal || 0;
-        document.getElementById("avatar").value = data.avatar || "";
-        document.getElementById("name").value = data.name || "";
-        document.getElementById("phone").value = data.phone || "";
-      }
-    });
+    <button type="submit">Update Profile</button>
+  </form>
+</div>
 
-    // Update profile
-    document.getElementById("profileForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const user = auth.currentUser;
-      if (!user) return;
-      const docRef = doc(db, "users", user.uid);
-      await updateDoc(docRef, {
-        avatar: document.getElementById("avatar").value,
-        name: document.getElementById("name").value,
-        phone: document.getElementById("phone").value
-      });
-      alert("Profile updated successfully!");
-      location.reload();
-    });
+<script>
+  // Avatar preview update
+  const avatarInput = document.getElementById('avatar');
+  const avatarPreview = document.getElementById('avatarPreview');
+  avatarInput.addEventListener('input', () => {
+    avatarPreview.src = avatarInput.value || "https://via.placeholder.com/120";
+  });
+</script>
 
-    // Logout
-    function doLogout() {
-      signOut(auth).then(() => window.location.href = "login.html");
-    }
-    document.getElementById("logoutBtn").addEventListener("click", doLogout);
-    document.getElementById("logoutBtn2").addEventListener("click", doLogout);
-  </script>
 </body>
 </html>
