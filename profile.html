@@ -15,33 +15,37 @@
     /* Header */
     header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       background: #1b2735;
-      padding: 10px 15px;
+      padding: 0 15px;
+      height: 60px;
       position: fixed;
-      width: 100%;
       top: 0;
+      width: 100%;
       z-index: 1000;
       box-sizing: border-box;
     }
     .menu-toggle {
-      font-size: 24px;
-      cursor: pointer;
+      font-size: 20px;
+      padding: 0 10px;
+      height: 40px;
+      line-height: 40px;
       background: none;
       border: none;
       color: #fff;
+      cursor: pointer;
     }
     .site-title {
+      flex: 1;
+      text-align: center;
       font-weight: bold;
       font-size: 18px;
-      text-align: center;
-      flex: 1;
+      color: #fff;
     }
     .profile {
       position: relative;
       cursor: pointer;
-      padding-left: 8px;
     }
     .profile img {
       width: 40px;
@@ -97,7 +101,7 @@
       background: #2f3c52;
     }
 
-    /* Main content */
+    /* Main */
     main {
       margin-top: 80px;
       margin-left: auto;
@@ -190,32 +194,24 @@
         <!-- Readonly fields -->
         <label>Email</label>
         <input type="email" id="email" class="readonly" readonly>
-
         <label>Role</label>
         <input type="text" id="role" class="readonly" readonly>
-
         <label>Balance</label>
         <input type="number" id="balance" class="readonly" readonly>
-
         <label>Approved</label>
         <input type="text" id="approved" class="readonly" readonly>
-
         <label>Tier</label>
         <input type="number" id="tier" class="readonly" readonly>
-
         <label>Weekly Diamonds</label>
         <input type="number" id="weeklyDiamonds" class="readonly" readonly>
-
         <label>Weekly Total</label>
         <input type="number" id="weeklyTotal" class="readonly" readonly>
 
         <!-- Editable fields -->
         <label>Avatar URL</label>
         <input type="text" id="avatar">
-
         <label>Name</label>
         <input type="text" id="name">
-
         <label>Phone</label>
         <input type="text" id="phone">
 
@@ -245,9 +241,9 @@
     const db = getFirestore(app);
 
     // Sidebar toggle
-    document.querySelector(".menu-toggle").addEventListener("click", () => {
-      document.getElementById("sidebar").classList.toggle("active");
-    });
+    const menuBtn = document.querySelector(".menu-toggle");
+    const sidebar = document.getElementById("sidebar");
+    menuBtn.addEventListener("click", () => sidebar.classList.toggle("active"));
 
     // Profile dropdown
     const profileMenu = document.getElementById("profileMenu");
@@ -258,26 +254,23 @@
 
     // Load user info
     onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          document.getElementById("userPhoto").src = data.avatar || "https://via.placeholder.com/100";
-          document.getElementById("profilePic").src = data.avatar || "https://via.placeholder.com/40";
-          document.getElementById("email").value = data.email || user.email;
-          document.getElementById("role").value = data.role || "";
-          document.getElementById("balance").value = data.balance || 0;
-          document.getElementById("approved").value = data.approved ? "Yes" : "No";
-          document.getElementById("tier").value = data.tier || 0;
-          document.getElementById("weeklyDiamonds").value = data.weeklyDiamonds || 0;
-          document.getElementById("weeklyTotal").value = data.weeklyTotal || 0;
-          document.getElementById("avatar").value = data.avatar || "";
-          document.getElementById("name").value = data.name || "";
-          document.getElementById("phone").value = data.phone || "";
-        }
-      } else {
-        window.location.href = "login.html";
+      if (!user) return window.location.href = "login.html";
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.getElementById("userPhoto").src = data.avatar || "https://via.placeholder.com/100";
+        document.getElementById("profilePic").src = data.avatar || "https://via.placeholder.com/40";
+        document.getElementById("email").value = data.email || user.email;
+        document.getElementById("role").value = data.role || "";
+        document.getElementById("balance").value = data.balance || 0;
+        document.getElementById("approved").value = data.approved ? "Yes" : "No";
+        document.getElementById("tier").value = data.tier || 0;
+        document.getElementById("weeklyDiamonds").value = data.weeklyDiamonds || 0;
+        document.getElementById("weeklyTotal").value = data.weeklyTotal || 0;
+        document.getElementById("avatar").value = data.avatar || "";
+        document.getElementById("name").value = data.name || "";
+        document.getElementById("phone").value = data.phone || "";
       }
     });
 
@@ -298,9 +291,7 @@
 
     // Logout
     function doLogout() {
-      signOut(auth).then(() => {
-        window.location.href = "login.html";
-      });
+      signOut(auth).then(() => window.location.href = "login.html");
     }
     document.getElementById("logoutBtn").addEventListener("click", doLogout);
     document.getElementById("logoutBtn2").addEventListener("click", doLogout);
