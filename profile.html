@@ -12,40 +12,36 @@
       color: #fff;
     }
 
-    /* Header */
+     /* Header */
     header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       background: #1b2735;
-      padding: 0 15px;
-      height: 60px;
+      padding: 10px 15px;
       position: fixed;
-      top: 0;
       width: 100%;
+      top: 0;
       z-index: 1000;
       box-sizing: border-box;
     }
     .menu-toggle {
-      font-size: 20px;
-      padding: 0 10px;
-      height: 40px;
-      line-height: 40px;
+      font-size: 24px;
+      cursor: pointer;
       background: none;
       border: none;
       color: #fff;
-      cursor: pointer;
     }
     .site-title {
-      flex: 1;
-      text-align: center;
       font-weight: bold;
       font-size: 18px;
-      color: #fff;
+      text-align: center;
+      flex: 1;
     }
     .profile {
       position: relative;
       cursor: pointer;
+      padding-left: 8px; /* ✅ avatar এর জন্য সামান্য padding */
     }
     .profile img {
       width: 40px;
@@ -104,60 +100,31 @@
     /* Main */
     main {
       margin-top: 80px;
-      margin-left: auto;
-      margin-right: auto;
-      max-width: 600px;
       padding: 20px;
+      text-align: center;
     }
-    .profile-card {
+    .user-card {
       background: #1c2431;
       padding: 20px;
       border-radius: 12px;
+      max-width: 400px;
+      margin: auto;
       box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
-    .profile-card h2 {
-      margin-bottom: 15px;
-      font-size: 22px;
-      text-align: center;
-    }
-    .profile-card img {
-      width: 100px;
-      height: 100px;
+    .user-card img {
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      display: block;
-      margin: 0 auto 15px;
+      margin-bottom: 10px;
     }
-    label {
-      display: block;
-      margin-top: 10px;
+    .user-card h2 {
+      margin: 10px 0;
+      font-size: 20px;
+    }
+    .user-card p {
+      margin: 5px 0;
       font-size: 14px;
-      color: #bbb;
-    }
-    input {
-      width: 100%;
-      padding: 8px;
-      margin-top: 4px;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-    }
-    .readonly {
-      background: #2f3c52;
       color: #aaa;
-    }
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 6px;
-      background: #3a86ff;
-      color: #fff;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #2a6fd8;
     }
   </style>
 </head>
