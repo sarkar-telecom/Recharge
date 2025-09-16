@@ -3,19 +3,19 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/fireba
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-// আপনার Firebase config
+// 🔹 আপনার Firebase Config এখানে বসান
 const firebaseConfig = {
-  apiKey: "AIzaSyBIIOv-2Laqugv5_HAIRNJllp8YUfYndF8",
-  authDomain: "diamond-recharge-f7f59.firebaseapp.com",
-  projectId: "diamond-recharge-f7f59",
-  storageBucket: "diamond-recharge-f7f59.appspot.com",
-  messagingSenderId: "657717928489",
-  appId: "1:657717928489:web:70431ebc9afb7002d4b238"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MSG_ID",
+  appId: "YOUR_APP_ID"
 };
 
-// একবার initialize
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Auth & Firestore export করা হলো
+// Export Firebase services
 export const auth = getAuth(app);
 export const db = getFirestore(app);
