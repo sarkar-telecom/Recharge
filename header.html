@@ -19,25 +19,43 @@
 </div>
 
 <style>
+/* Reset default margin/padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f4f4f4;
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #1b2735;
-  padding: 10px 15px;
+  padding: 10px 0; /* শুধু উপরে-নিচে padding, বাম-ডান 0 */
   position: fixed;
   width: 100%;
   top: 0;
+  left: 0; /* একদম বাম থেকে শুরু হবে */
   z-index: 1000;
-  box-sizing: border-box;
 }
+
+/* Menu toggle */
 .menu-toggle {
   font-size: 24px;
   cursor: pointer;
   background: none;
   border: none;
   color: #fff;
+  margin-left: 10px; /* বাটন আর একদম বাম দিকের মাঝে ছোট স্পেস */
 }
+
+/* Title */
 .site-title {
   font-weight: bold;
   font-size: 18px;
@@ -46,10 +64,12 @@ header {
   color: yellow; 
   text-shadow: 0 0 8px orange, 0 0 10px white;
 }
+
+/* Profile */
 .profile {
   position: relative;
   cursor: pointer;
-  padding-left: 8px; /* avatar padding */
+  padding-right: 10px;
 }
 .profile img {
   width: 40px;
@@ -57,6 +77,8 @@ header {
   border-radius: 50%;
   display: block;
 }
+
+/* Dropdown */
 .dropdown {
   position: absolute;
   right: 0;
@@ -109,7 +131,7 @@ header {
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
