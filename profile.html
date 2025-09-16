@@ -103,60 +103,34 @@
       padding: 20px;
       text-align: center;
     }
-    .user-card {
+    .profile-card {
       background: #1c2431;
       padding: 20px;
       border-radius: 12px;
-      max-width: 450px;
+      max-width: 500px;
       margin: auto;
       box-shadow: 0 4px 6px rgba(0,0,0,0.3);
       text-align: left;
     }
-    .user-card img {
-      width: 80px;
-      height: 80px;
+    .profile-card img {
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       display: block;
-      margin: 0 auto 15px auto;
+      margin: 0 auto 15px;
     }
-    .user-card h2 {
+    .profile-card h2 {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
-    .form-group {
-      margin-bottom: 12px;
+    .profile-card .field {
+      margin: 8px 0;
+      font-size: 15px;
     }
-    .form-group label {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 14px;
+    .profile-card .field strong {
       color: #bbb;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 8px;
-      border-radius: 6px;
-      border: none;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-    .readonly {
-      background: #2a3445;
-      color: #ccc;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 6px;
-      margin-top: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      background: #2f80ed;
-      color: #fff;
-    }
-    button:hover {
-      background: #1f5bb5;
+      display: inline-block;
+      width: 130px;
     }
   </style>
 </head>
@@ -185,55 +159,17 @@
 
   <!-- Main -->
   <main>
-    <div class="user-card">
-      <img id="userPhoto" src="https://via.placeholder.com/80" alt="User Photo">
-      <h2>My Profile</h2>
-      <form id="profileForm">
-        <!-- Readonly fields -->
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="email" class="readonly" readonly>
-        </div>
-        <div class="form-group">
-          <label>Role</label>
-          <input type="text" id="role" class="readonly" readonly>
-        </div>
-        <div class="form-group">
-          <label>Balance</label>
-          <input type="number" id="balance" class="readonly" readonly>
-        </div>
-        <div class="form-group">
-          <label>Approved</label>
-          <input type="text" id="approved" class="readonly" readonly>
-        </div>
-        <div class="form-group">
-          <label>Tier</label>
-          <input type="number" id="tier" class="readonly" readonly>
-        </div>
-        <div class="form-group">
-          <label>Weekly Diamonds</label>
-          <input type="number" id="weeklyDiamonds" class="readonly" readonly>
-        </div>
-        <div class="form-group">
-          <label>Weekly Total</label>
-          <input type="number" id="weeklyTotal" class="readonly" readonly>
-        </div>
-
-        <!-- Editable fields -->
-        <div class="form-group">
-          <label>Avatar URL</label>
-          <input type="text" id="avatar">
-        </div>
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" id="name">
-        </div>
-        <div class="form-group">
-          <label>Phone</label>
-          <input type="text" id="phone">
-        </div>
-        <button type="submit">Update Profile</button>
-      </form>
+    <div class="profile-card">
+      <img id="userPhoto" src="https://via.placeholder.com/90" alt="User Photo">
+      <h2 id="userName">Loading...</h2>
+      <div class="field"><strong>Email:</strong> <span id="userEmail"></span></div>
+      <div class="field"><strong>Role:</strong> <span id="userRole"></span></div>
+      <div class="field"><strong>Balance:</strong> <span id="userBalance"></span></div>
+      <div class="field"><strong>Approved:</strong> <span id="userApproved"></span></div>
+      <div class="field"><strong>Tier:</strong> <span id="userTier"></span></div>
+      <div class="field"><strong>Weekly Diamonds:</strong> <span id="userDiamonds"></span></div>
+      <div class="field"><strong>Weekly Total:</strong> <span id="userTotal"></span></div>
+      <div class="field"><strong>Phone:</strong> <span id="userPhone"></span></div>
     </div>
   </main>
 
@@ -241,7 +177,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAyhjOsIXNAkBglpRllt0OZIOJYpdB_9-8",
@@ -272,45 +208,33 @@
     // Load user info
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        document.getElementById("email").value = user.email;
-        document.getElementById("userPhoto").src = user.photoURL || "https://via.placeholder.com/80";
+        document.getElementById("userName").textContent = user.displayName || "No Name";
+        document.getElementById("userEmail").textContent = user.email;
+        document.getElementById("userPhoto").src = user.photoURL || "https://via.placeholder.com/90";
         document.getElementById("profilePic").src = user.photoURL || "https://via.placeholder.com/40";
 
+        // Firestore extra user info
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
-          if (data.role) document.getElementById("role").value = data.role;
-          if (data.balance) document.getElementById("balance").value = data.balance;
-          if (data.approved) document.getElementById("approved").value = data.approved;
-          if (data.tier) document.getElementById("tier").value = data.tier;
-          if (data.weeklyDiamonds) document.getElementById("weeklyDiamonds").value = data.weeklyDiamonds;
-          if (data.weeklyTotal) document.getElementById("weeklyTotal").value = data.weeklyTotal;
-          if (data.name) document.getElementById("name").value = data.name;
-          if (data.phone) document.getElementById("phone").value = data.phone;
+          if (data.name) document.getElementById("userName").textContent = data.name;
           if (data.avatar) {
-            document.getElementById("avatar").value = data.avatar;
             document.getElementById("userPhoto").src = data.avatar;
             document.getElementById("profilePic").src = data.avatar;
           }
+          if (data.email) document.getElementById("userEmail").textContent = data.email;
+          if (data.role) document.getElementById("userRole").textContent = data.role;
+          if (data.balance) document.getElementById("userBalance").textContent = data.balance;
+          if (data.approved !== undefined) document.getElementById("userApproved").textContent = data.approved;
+          if (data.tier) document.getElementById("userTier").textContent = data.tier;
+          if (data.weeklyDiamonds) document.getElementById("userDiamonds").textContent = data.weeklyDiamonds;
+          if (data.weeklyTotal) document.getElementById("userTotal").textContent = data.weeklyTotal;
+          if (data.phone) document.getElementById("userPhone").textContent = data.phone;
         }
       } else {
         window.location.href = "login.html";
       }
-    });
-
-    // Update profile
-    document.getElementById("profileForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const user = auth.currentUser;
-      if (!user) return;
-      const docRef = doc(db, "users", user.uid);
-      await updateDoc(docRef, {
-        name: document.getElementById("name").value,
-        phone: document.getElementById("phone").value,
-        avatar: document.getElementById("avatar").value
-      });
-      alert("Profile updated!");
     });
 
     // Logout
